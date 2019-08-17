@@ -34,3 +34,8 @@ class AuthService:
             return False
 
         return True
+
+    @staticmethod
+    def delete_expired_tokens():
+        Token.query.filter(Token.expiration < datetime.utcnow()).delete()
+        db.session.commit()

@@ -42,10 +42,12 @@ def create_app(test_config=None):
 
     from sevilla.frontend import frontend
     from sevilla.db import db
+    from sevilla.services import AuthService
 
     app.register_blueprint(frontend)
     db.init_app(app)
     with app.app_context():
         db.create_all()
+        AuthService.delete_expired_tokens()
 
     return app
