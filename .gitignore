@@ -105,3 +105,4 @@ venv.bak/
 
 # sevilla
 instance/
+sevilla.db
