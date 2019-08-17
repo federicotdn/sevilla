@@ -32,6 +32,9 @@ def create_app(test_config=None):
 
         if "SECRET_KEY" in os.environ:
             app.config["SECRET_KEY"] = os.environ["SECRET_KEY"]
+
+        if "SEVILLA_PASSWORD" in os.environ:
+            app.config["SEVILLA_PASSWORD"] = os.environ["SEVILLA_PASSWORD"]
     else:
         app.config.from_mapping(test_config)
 

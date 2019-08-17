@@ -1,0 +1,2 @@
+class PasswordNotSet(Exception):
+    pass
