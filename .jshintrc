@@ -1,0 +1,15 @@
+{
+    "esversion": 6,
+    "unused": true,
+    "browser": true,
+    "strict": "global",
+    "globals": {
+	"URLSearchParams": true
+    },
+    "curly": true,
+    "eqeqeq": true,
+    "nocomma": true,
+    "shadow": "outer",
+    "undef": true,
+    "unused": true
+}
