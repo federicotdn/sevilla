@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang=en>
+  <head>
+    <meta charset=utf-8>
+    <title>Sevilla</title>
+    <script src="notes.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+  </head>
+  <body>
+    <button id="backButton">Write</button>
+    <table>
+      <thead id="notesTableHeader">
+	<tr>
+	  <td>Time</td>
+	  <td>Note</td>
+	  <td>Hide</td>
+	</tr>
+      </thead>
+      <tbody id="notesTable"></tbody>
+    </table>
+    <h4 id="loadingHeader">Loading...</h4>
+    <div id="paginationButtons">
+      <button id="paginationButtonPrevious" disabled>←</button>
+      <button id="paginationButtonNext" disabled>→</button>
+    </div>
+    <h2 id="notesError">Error retreiving notes list</h2>
+    <template id="noteRow">
+      <tr>
+	<td></td>
+	<td><a class="noteLink" href="#"></a></td>
+	<td><a class="hideLink" href="#"><button>✕</button></a></td>
+      </tr>
+    </template>
+  </body>
+</html>

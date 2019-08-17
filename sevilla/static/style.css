@@ -1,0 +1,117 @@
+#noteText {
+    width: 94vw;
+    height: 100vh;
+    position: fixed;
+    overflow-x: hide;
+    top: 1.2em;
+    border: 0em;
+    margin-left: 3vw;
+    padding: 0em;
+    font-size: 2.5em;
+    font-family: sans-serif;
+    resize: none;
+    background-color: inherit;
+}
+
+#indicator {
+    width: 100%;
+    height: 1.5em;
+    position: fixed;
+    top: 0em;
+    z-index: 999;
+    cursor: default;
+}
+
+#notesError {
+    display: none;
+    color: #aa0000;
+    width: 100%;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    text-align: center;
+    font-family: sans-serif;
+}
+
+#loginForm {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+body {
+    background-color: #EEEEEE;
+    margin: 0px;
+}
+
+#loginButton {
+    margin: 0 auto;
+    margin-top: 5%;
+    display: block;
+    width: 40%;
+}
+
+#passwordField {
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+}
+
+#loginLogo {
+    margin: 0 auto;
+    margin-bottom: 10%;
+    display: block;
+}
+
+table, th, td {
+    border-collapse: collapse;
+}
+
+th, td {
+    border-bottom: 2px solid #AAAAAA;
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
+}
+
+thead {
+    font-weight: bold;
+}
+
+table {
+    font-family: sans-serif;
+    width: 96vw;
+    margin-left: 2vw;
+    margin-top: 1em;
+}
+
+#backButton {
+    margin-top: 0.5em;
+    margin-left: 0.5em;
+}
+
+#paginationButtons {
+    margin: auto;
+    width: 30%;
+    margin-top: 1em;
+    margin-bottom: 3em;
+}
+
+#loadingHeader {
+    width: 100%;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    text-align: center;
+    font-family: sans-serif;
+}
+
+button {
+    text-align: center;
+}
+
+#paginationButtonNext {
+    float: right;
+}
+
+#paginationButtonPrevious {
+    float: left;
+}
