@@ -8,9 +8,14 @@ dev_server:
 	SEVILLA_PASSWORD=$(DEV_PASSWORD) \
 	flask run --port 8080
 
+shell:
+	FLASK_APP=sevilla \
+	SEVILLA_PASSWORD=$(DEV_PASSWORD) \
+	flask shell
+
 lint:
 	flake8 sevilla/
 	black --check sevilla/
 
-formatter:
+format:
 	black sevilla/

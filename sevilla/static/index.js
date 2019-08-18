@@ -106,7 +106,7 @@ function uploadNote() {
     });
 
     var request = new XMLHttpRequest();
-    request.open('POST', "/upload" + "?" + params.toString());
+    request.open('POST', "/notes" + "?" + params.toString());
     request.setRequestHeader("Content-Type", "text/plain");
 
     request.onload = noteUploaded;

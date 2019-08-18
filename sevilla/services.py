@@ -1,7 +1,25 @@
 from datetime import datetime
 from flask import current_app
-from sevilla.db import db, Token
+from sevilla.db import db, Token, Note
 from sevilla.exceptions import PasswordNotSet
+
+
+class NotesService:
+    @staticmethod
+    def id_is_valid(identifier):
+        return Note.id_is_valid(identifier)
+
+    @staticmethod
+    def upsert_note(note_id, contents, timestamp):
+        note = Note.query.get(note_id)
+
+        if not note:
+            note = Note(id=note_id, contents=contents, modified=timestamp)
+            db.session.add(note)
+        else:
+            note.update_contents(contents, timestamp)
+
+        db.session.commit()
 
 
 class AuthService:
@@ -30,10 +48,7 @@ class AuthService:
         if not token:
             return False
 
-        if token.expiration < datetime.utcnow():
-            return False
-
-        return True
+        return token.expiration > datetime.utcnow()
 
     @staticmethod
     def delete_expired_tokens():

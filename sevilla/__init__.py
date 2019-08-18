@@ -8,6 +8,7 @@ DEFAULT_CONFIG = {
     "SESSION_COOKIE_SECURE": True,
     "SESSION_COOKIE_SAMESITE": "Strict",
     "PERMANENT_SESSION_LIFETIME": timedelta(days=30),
+    "MAX_CONTENT_LENGTH": 128 * 1024,
 }
 
 
@@ -19,10 +20,10 @@ def create_app(test_config=None):
         static_url_path="/",
     )
 
-    if not test_config:
-        # Apply default config
-        app.config.from_mapping(**DEFAULT_CONFIG)
+    # Apply default config
+    app.config.from_mapping(**DEFAULT_CONFIG)
 
+    if not test_config:
         # Apply user config
         app.config.from_pyfile("sevilla.cfg")
 
@@ -45,6 +46,7 @@ def create_app(test_config=None):
     from sevilla.services import AuthService
 
     app.register_blueprint(frontend)
+
     db.init_app(app)
     with app.app_context():
         db.create_all()
