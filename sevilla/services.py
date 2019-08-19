@@ -12,14 +12,24 @@ class NotesService:
     @staticmethod
     def upsert_note(note_id, contents, timestamp):
         note = Note.query.get(note_id)
+        created = False
 
         if not note:
             note = Note(id=note_id, contents=contents, modified=timestamp)
             db.session.add(note)
+            created = True
         else:
             note.update_contents(contents, timestamp)
 
         db.session.commit()
+        return created
+
+    @staticmethod
+    def get_note(note_id):
+        if not Note.id_is_valid(note_id):
+            return None
+
+        return Note.query.get(note_id)
 
 
 class AuthService:

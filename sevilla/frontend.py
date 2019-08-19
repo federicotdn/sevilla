@@ -51,12 +51,30 @@ def upsert_note():
     contents = request.get_data(as_text=True)
 
     try:
-        NotesService.upsert_note(note_id, contents, timestamp)
+        created = NotesService.upsert_note(note_id, contents, timestamp)
     except ModelException as e:
         current_app.logger.error(e)
         abort(500)
 
+    if created:
+        current_app.logger.info("New note created with ID: {}.".format(note_id))
+    else:
+        current_app.logger.info("Updated note with ID: {}.".format(note_id))
+
     return {"id": note_id, "timestamp": timestamp_millis}
+
+
+@frontend.route("/notes/<note_id>")
+@redirect_login
+def get_note(note_id):
+    if not NotesService.id_is_valid(note_id):
+        abort(400)
+
+    note = NotesService.get_note(note_id)
+    if not note:
+        abort(404)
+
+    return note.contents
 
 
 @frontend.route("/login")
@@ -73,6 +91,8 @@ def login():
         token = AuthService.new_token()
         session["id"] = token.id
         session.permanent = True
+
+        current_app.logger.info("New login with ID: {}.".format(session["id"]))
         return redirect(url_for(".index"))
     else:
         abort(401)
