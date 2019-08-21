@@ -51,10 +51,7 @@ class NotesService:
             .paginate(page, per_page=page_size)
         )
 
-        pagination.items = [
-            Note.Preview(*item)
-            for item in pagination.items
-        ]
+        pagination.items = [Note.Preview(*item) for item in pagination.items]
 
         return pagination
 
