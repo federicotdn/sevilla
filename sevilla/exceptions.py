@@ -4,3 +4,7 @@ class PasswordNotSet(Exception):
 
 class ModelException(Exception):
     pass
+
+
+class NoteNotFound(Exception):
+    pass

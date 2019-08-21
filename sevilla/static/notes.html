@@ -3,7 +3,6 @@
   <head>
     <meta charset=utf-8>
     <title>Sevilla</title>
-    <script src="notes.js"></script>
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -30,7 +29,11 @@
 	<tr>
 	  <td>{{ natural_datetime(item.modified) }}</td>
 	  <td><a href="{{ url_for('.get_note', note_id=item.id) }}">{{ item.text }}</a></td>
-	  <td><a class="hideLink" href="#"><button>✕</button></a></td>
+	  <td>
+	    <form action="{{ url_for('.upsert_note', note_id=item.id) ~ '?hide' }}" method="post">
+	      <button>✕</button>
+	    </form>
+	  </td>
 	</tr>
 	{%- endfor %}
       </tbody>

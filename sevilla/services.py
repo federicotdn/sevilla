@@ -1,7 +1,7 @@
 from datetime import datetime
 from flask import current_app
 from sevilla.db import db, Token, Note
-from sevilla.exceptions import PasswordNotSet
+from sevilla.exceptions import PasswordNotSet, NoteNotFound
 
 DEFAULT_MAX_PREVIEW_LENGTH = 20
 DEFAULT_PAGE_SIZE = 15
@@ -30,9 +30,19 @@ class NotesService:
     @staticmethod
     def get_note(note_id):
         if not Note.id_is_valid(note_id):
-            return None
+            raise NoteNotFound
 
-        return Note.query.get(note_id)
+        note = Note.query.get(note_id)
+        if not note:
+            raise NoteNotFound
+
+        return note
+
+    @staticmethod
+    def hide_note(note_id):
+        note = NotesService.get_note(note_id)
+        note.hidden = True
+        db.session.commit()
 
     @staticmethod
     def note_previews(

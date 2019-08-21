@@ -3,7 +3,7 @@ from datetime import datetime, timedelta, timezone
 from flask import Blueprint, current_app, request, session, redirect, url_for
 from flask import abort, render_template
 from sevilla.services import AuthService, NotesService
-from sevilla.exceptions import PasswordNotSet, ModelException
+from sevilla.exceptions import PasswordNotSet, ModelException, NoteNotFound
 
 frontend = Blueprint("frontend", __name__)
 
@@ -64,14 +64,17 @@ def list_notes():
     )
 
 
-@frontend.route("/notes", methods=["POST"])
-def upsert_note():
+@frontend.route("/notes/<note_id>", methods=["POST"])
+def upsert_note(note_id):
     if not AuthService.is_valid_token(session.get("id")):
         abort(401)
 
-    note_id = request.args.get("id")
     if not NotesService.id_is_valid(note_id):
         abort(400)
+
+    if "hide" in request.args:
+        NotesService.hide_note(note_id)
+        return redirect(url_for(".list_notes"))
 
     try:
         timestamp_millis = int(request.args.get("timestamp"))
@@ -103,11 +106,7 @@ def get_note(note_id):
     if not NotesService.id_is_valid(note_id):
         abort(400)
 
-    note = NotesService.get_note(note_id)
-    if not note:
-        abort(404)
-
-    return note.contents
+    return NotesService.get_note(note_id).contents
 
 
 @frontend.route("/login")
@@ -135,3 +134,8 @@ def login():
 def handle_password_not_set(_):
     current_app.logger.error("App password ('SEVILLA_PASSWORD') not set.")
     return "Internal server error", 500
+
+
+@frontend.errorhandler(NoteNotFound)
+def handle_note_not_found(_):
+    return "Note not found", 404

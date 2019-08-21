@@ -101,12 +101,11 @@ function uploadNote() {
 
     var timestamp = Date.now();
     var params = new URLSearchParams({
-	"timestamp": timestamp,
-	"id": noteId
+	"timestamp": timestamp
     });
 
     var request = new XMLHttpRequest();
-    request.open('POST', "/notes" + "?" + params.toString());
+    request.open('POST', "/notes/" + noteId + "?" + params.toString());
     request.setRequestHeader("Content-Type", "text/plain");
 
     request.onload = noteUploaded;
