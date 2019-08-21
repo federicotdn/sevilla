@@ -1,5 +1,5 @@
 from functools import wraps
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from flask import Blueprint, current_app, request, session, redirect, url_for
 from flask import abort, render_template
 from sevilla.services import AuthService, NotesService
@@ -28,7 +28,15 @@ def index():
 @frontend.context_processor
 def natural_datetime():
     def fn(dt):
-        return "Date: {}".format(dt)
+        dt = dt.replace(tzinfo=timezone.utc).astimezone()
+        now = datetime.now().astimezone()
+
+        if dt.date() == now.date():
+            return dt.strftime("Today at %H:%M")
+        elif dt.date() == now.date() - timedelta(days=1):
+            return dt.strftime("Yesterday at %H:%M")
+
+        return dt.strftime("%d/%m/%y - %H:%M")
 
     return {"natural_datetime": fn}
 
