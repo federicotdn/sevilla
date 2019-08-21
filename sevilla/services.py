@@ -47,6 +47,7 @@ class NotesService:
                 db.func.substr(Note.contents, 1, max_preview_length),
             )
             .filter(Note.hidden == db.false())
+            .order_by(Note.modified.desc())
             .paginate(page, per_page=page_size)
         )
 
