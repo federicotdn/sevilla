@@ -40,7 +40,7 @@ class NotesService:
         page_size=DEFAULT_PAGE_SIZE,
         max_preview_length=DEFAULT_MAX_PREVIEW_LENGTH,
     ):
-        return (
+        pagination = (
             db.session.query(
                 Note.id,
                 Note.modified,
@@ -49,6 +49,13 @@ class NotesService:
             .filter(Note.hidden == db.false())
             .paginate(page, per_page=page_size)
         )
+
+        pagination.items = [
+            Note.Preview(*item)
+            for item in pagination.items
+        ]
+
+        return pagination
 
 
 class AuthService:

@@ -28,8 +28,8 @@
       <tbody id="notesTable">
 	{%- for item in pagination.items  %}
 	<tr>
-	  <td>{{ natural_datetime(item[1]) }}</td>
-	  <td><a href="{{ url_for('.get_note', note_id=item[0]) }}">{{ item[2] }}</a></td>
+	  <td>{{ natural_datetime(item.modified) }}</td>
+	  <td><a href="{{ url_for('.get_note', note_id=item.id) }}">{{ item.text }}</a></td>
 	  <td><a class="hideLink" href="#"><button>✕</button></a></td>
 	</tr>
 	{%- endfor %}

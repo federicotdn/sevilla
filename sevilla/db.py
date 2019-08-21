@@ -1,5 +1,6 @@
 import secrets
 import string
+from collections import namedtuple
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from flask import current_app
@@ -30,11 +31,12 @@ class Token(db.Model):
 
 
 class Note(db.Model):
+    Preview = namedtuple("Preview", ["id", "modified", "text"])
+
     id = db.Column(db.String(NOTE_ID_BYTES * 2), primary_key=True)
     contents = db.Column(db.Text, nullable=False)
     modified = db.Column(db.DateTime, nullable=False)
     hidden = db.Column(db.Boolean, nullable=False, default=False)
-    preview = None
 
     def update_contents(self, contents, timestamp):
         if self.modified < timestamp:
