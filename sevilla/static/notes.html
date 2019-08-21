@@ -16,7 +16,7 @@
     <meta name="theme-color" content="#ffffff">
   </head>
   <body>
-    <button id="backButton">Write</button>
+    <a href="{{ url_for('.index') }}"><button id="backButton">Write</button></a>
     <table>
       <thead id="notesTableHeader">
 	<tr>
@@ -25,20 +25,30 @@
 	  <td>Hide</td>
 	</tr>
       </thead>
-      <tbody id="notesTable"></tbody>
+      <tbody id="notesTable">
+	{%- for item in pagination.items  %}
+	<tr>
+	  <td>{{ natural_datetime(item[1]) }}</td>
+	  <td><a href="{{ url_for('.get_note', note_id=item[0]) }}">{{ item[2] }}</a></td>
+	  <td><a class="hideLink" href="#"><button>✕</button></a></td>
+	</tr>
+	{%- endfor %}
+      </tbody>
     </table>
-    <h4 id="loadingHeader">Loading...</h4>
+    {% if not pagination.items %}
+    <h2 id="noNotesHeader">No notes to show.</h2>
+    {% endif %}
     <div id="paginationButtons">
+      {% if pagination.has_prev %}
+      <a href="{{ url_previous  }}"><button id="paginationButtonPrevious">←</button></a>
+      {% else %}
       <button id="paginationButtonPrevious" disabled>←</button>
+      {% endif %}
+      {% if pagination.has_next %}
+      <a href="{{ url_next }}"><button id="paginationButtonNext">→</button></a>
+      {% else %}
       <button id="paginationButtonNext" disabled>→</button>
+      {% endif %}
     </div>
-    <h2 id="notesError">Error retreiving notes list</h2>
-    <template id="noteRow">
-      <tr>
-	<td></td>
-	<td><a class="noteLink" href="#"></a></td>
-	<td><a class="hideLink" href="#"><button>✕</button></a></td>
-      </tr>
-    </template>
   </body>
 </html>

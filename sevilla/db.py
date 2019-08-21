@@ -34,6 +34,7 @@ class Note(db.Model):
     contents = db.Column(db.Text, nullable=False)
     modified = db.Column(db.DateTime, nullable=False)
     hidden = db.Column(db.Boolean, nullable=False, default=False)
+    preview = None
 
     def update_contents(self, contents, timestamp):
         if self.modified < timestamp:

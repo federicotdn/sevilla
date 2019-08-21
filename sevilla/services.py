@@ -3,6 +3,9 @@ from flask import current_app
 from sevilla.db import db, Token, Note
 from sevilla.exceptions import PasswordNotSet
 
+DEFAULT_MAX_PREVIEW_LENGTH = 20
+DEFAULT_PAGE_SIZE = 15
+
 
 class NotesService:
     @staticmethod
@@ -30,6 +33,22 @@ class NotesService:
             return None
 
         return Note.query.get(note_id)
+
+    @staticmethod
+    def note_previews(
+        page=1,
+        page_size=DEFAULT_PAGE_SIZE,
+        max_preview_length=DEFAULT_MAX_PREVIEW_LENGTH,
+    ):
+        return (
+            db.session.query(
+                Note.id,
+                Note.modified,
+                db.func.substr(Note.contents, 1, max_preview_length),
+            )
+            .filter(Note.hidden == db.false())
+            .paginate(page, per_page=page_size)
+        )
 
 
 class AuthService:
