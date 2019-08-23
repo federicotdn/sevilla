@@ -43,14 +43,10 @@
     {% endif %}
     <div id="paginationButtons">
       {% if pagination.has_prev %}
-      <a href="{{ url_previous  }}"><button id="paginationButtonPrevious">←</button></a>
-      {% else %}
-      <button id="paginationButtonPrevious" disabled>←</button>
+      <a href="{{ url_previous  }}"><button id="paginationButtonPrevious"><b>←</b></button></a>
       {% endif %}
       {% if pagination.has_next %}
-      <a href="{{ url_next }}"><button id="paginationButtonNext">→</button></a>
-      {% else %}
-      <button id="paginationButtonNext" disabled>→</button>
+      <a href="{{ url_next }}"><button id="paginationButtonNext"><b>→</b></button></a>
       {% endif %}
     </div>
   </body>

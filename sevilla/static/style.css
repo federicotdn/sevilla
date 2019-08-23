@@ -22,16 +22,6 @@
     cursor: default;
 }
 
-#notesError {
-    display: none;
-    color: #aa0000;
-    width: 100%;
-    margin-top: 1em;
-    margin-bottom: 1em;
-    text-align: center;
-    font-family: sans-serif;
-}
-
 #loginForm {
     position: absolute;
     top: 50%;
@@ -40,7 +30,6 @@
 }
 
 body {
-    background-color: #EEEEEE;
     margin: 0px;
 }
 
@@ -68,7 +57,7 @@ table, th, td {
 }
 
 th, td {
-    border-bottom: 2px solid #AAAAAA;
+    border-bottom: 2px solid #CCCCCC;
     padding-top: 0.3em;
     padding-bottom: 0.3em;
 }
@@ -85,8 +74,15 @@ table {
 }
 
 #backButton {
-    margin-top: 0.5em;
-    margin-left: 0.5em;
+    margin-top: 0.8em;
+    margin-left: 0.8em;
+    background: #28A745;
+    color: #FFFFFF;
+    font-size: 1.0em;
+    padding-bottom: 0.1em;
+    padding-top: 0.1em;
+    padding-right: 1em;
+    padding-left: 1em;
 }
 
 #paginationButtons {
@@ -106,6 +102,9 @@ table {
 
 button {
     text-align: center;
+    border-radius: 0em;
+    border: black 0.1em solid;
+    cursor: pointer;
 }
 
 #paginationButtonNext {
