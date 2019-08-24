@@ -44,6 +44,20 @@ class NotesService:
         db.session.commit()
 
     @staticmethod
+    def _pretty_preview(preview, max_preview_length):
+        lines = preview.splitlines()
+        first = lines[0].strip()
+        first_len = len(first)
+
+        if not first_len:
+            return "..."
+
+        if first_len < max_preview_length and len(lines) == 1:
+            return first
+
+        return "{}...".format(first)
+
+    @staticmethod
     def note_previews(
         page=1,
         page_size=DEFAULT_PAGE_SIZE,
@@ -60,7 +74,14 @@ class NotesService:
             .paginate(page, per_page=page_size)
         )
 
-        pagination.items = [Note.Preview(*item) for item in pagination.items]
+        pagination.items = [
+            Note.Preview(
+                item[0],
+                item[1],
+                NotesService._pretty_preview(item[2], max_preview_length),
+            )
+            for item in pagination.items
+        ]
 
         return pagination
 
