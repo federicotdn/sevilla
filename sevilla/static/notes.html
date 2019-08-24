@@ -3,6 +3,7 @@
   <head>
     <meta charset=utf-8>
     <title>Sevilla</title>
+    <script src="notes.js"></script>
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -27,7 +28,7 @@
       <tbody id="notesTable">
 	{%- for item in pagination.items  %}
 	<tr>
-	  <td>{{ natural_datetime(item.modified) }}</td>
+	  <td class="noteTimestamp">{{ timestamp_millis(item.modified) }}</td>
 	  <td><a href="{{ url_for('.get_note', note_id=item.id) }}">{{ item.text }}</a></td>
 	  <td>
 	    <form action="{{ url_for('.upsert_note', note_id=item.id) ~ '?hide' }}" method="post">

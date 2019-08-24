@@ -26,19 +26,13 @@ def index():
 
 
 @frontend.context_processor
-def natural_datetime():
+def timestamp_millis():
     def fn(dt):
-        dt = dt.replace(tzinfo=timezone.utc).astimezone()
-        now = datetime.now().astimezone()
+        # Ensure the datetime object is aware first
+        utc_dt = dt.replace(tzinfo=timezone.utc)
+        return int(utc_dt.timestamp() * 1000)
 
-        if dt.date() == now.date():
-            return dt.strftime("Today at %H:%M")
-        elif dt.date() == now.date() - timedelta(days=1):
-            return dt.strftime("Yesterday at %H:%M")
-
-        return dt.strftime("%d/%m/%y - %H:%M")
-
-    return {"natural_datetime": fn}
+    return {"timestamp_millis": fn}
 
 
 @frontend.route("/notes")
