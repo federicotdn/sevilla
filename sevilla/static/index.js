@@ -1,6 +1,6 @@
 "use strict";
 
-const OK_COLOR = "#0C9000";
+const OK_COLOR = "#28A745";
 const LOAD_COLOR = "#A0A0A0";
 const ERR_COLOR = "#CC3232";
 const SEND_INTERVAL_MS = 1 * 1000;
