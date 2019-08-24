@@ -66,10 +66,6 @@ def upsert_note(note_id):
     if not NotesService.id_is_valid(note_id):
         abort(400)
 
-    if "hide" in request.args:
-        NotesService.hide_note(note_id)
-        return redirect(url_for(".list_notes"))
-
     try:
         timestamp_millis = int(request.args.get("timestamp"))
     except (ValueError, TypeError):
@@ -101,6 +97,22 @@ def get_note(note_id):
         abort(400)
 
     return NotesService.get_note(note_id).contents
+
+
+@frontend.route("/notes/<note_id>/hide", methods=["POST"])
+@redirect_login
+def hide_note(note_id):
+    NotesService.hide_note(note_id)
+    page = int(request.form.get("page"))
+    page_size = int(request.form.get("pageSize"))
+
+    if page_size == 1:
+        # We are hiding the last note on the page
+        page -= 1
+
+    return redirect(
+        url_for(".list_notes") + ("?page={}".format(page) if page > 1 else "")
+    )
 
 
 @frontend.route("/login")

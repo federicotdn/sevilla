@@ -24,7 +24,9 @@
 	  <td class="noteTimestamp">{{ timestamp_millis(item.modified) }}</td>
 	  <td><a href="{{ url_for('.get_note', note_id=item.id) }}">{{ item.text }}</a></td>
 	  <td>
-	    <form action="{{ url_for('.upsert_note', note_id=item.id) ~ '?hide' }}" method="post">
+	    <form action="{{ url_for('.hide_note', note_id=item.id) }}" method="post">
+	      <input name="pageSize" type="hidden" value="{{ pagination.items|length }}">
+	      <input name="page" type="hidden" value="{{ pagination.page  }}">
 	      <button>✕</button>
 	    </form>
 	  </td>
