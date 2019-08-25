@@ -46,16 +46,15 @@ class NotesService:
     @staticmethod
     def _pretty_preview(preview, max_preview_length):
         lines = preview.splitlines()
-        first = lines[0].strip()
-        first_len = len(first)
+        first = lines[0]
 
-        if not first_len:
+        if not first.strip():
             return "..."
 
-        if first_len < max_preview_length and len(lines) == 1:
+        if len(first) < max_preview_length and len(lines) == 1:
             return first
 
-        return "{}...".format(first)
+        return "{}...".format(first.rstrip())
 
     @staticmethod
     def note_previews(
