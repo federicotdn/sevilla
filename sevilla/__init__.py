@@ -12,34 +12,36 @@ DEFAULT_CONFIG = {
 }
 
 
+def read_env_config(app):
+    for key, value in app.config.items():
+        if key not in os.environ:
+            continue
+
+        env_value = os.environ[key]
+        if env_value == "None":
+            app.config[key] = None
+        elif env_value == "True":
+            app.config[key] = True
+        elif env_value == "False":
+            app.config[key] = False
+        else:
+            try:
+                app.config[key] = int(env_value)
+            except ValueError:
+                app.config[key] = env_value
+
+
 def create_app(test_config=None):
-    app = Flask(
-        __name__,
-        instance_relative_config=True,
-        static_url_path="/",
-        template_folder="static",
-    )
+    app = Flask(__name__, static_url_path="/", template_folder="static")
 
     # Apply default config
     app.config.from_mapping(**DEFAULT_CONFIG)
 
     if not test_config:
-        # Apply user config
-        app.config.from_pyfile("sevilla.cfg")
-
-        # Overwrite with env config (useful for development)
-        if os.environ.get("SESSION_COOKIE_SECURE") == "False":
-            app.config["SESSION_COOKIE_SECURE"] = False
-
-        if "SECRET_KEY" in os.environ:
-            app.config["SECRET_KEY"] = os.environ["SECRET_KEY"]
-
-        if "SEVILLA_PASSWORD" in os.environ:
-            app.config["SEVILLA_PASSWORD"] = os.environ["SEVILLA_PASSWORD"]
+        read_env_config(app)
+        app.config["SEVILLA_PASSWORD"] = os.environ.get("SEVILLA_PASSWORD")
     else:
         app.config.from_mapping(test_config)
-
-    os.makedirs(app.instance_path, exist_ok=True)
 
     from sevilla.frontend import frontend
     from sevilla.db import db
