@@ -4,6 +4,7 @@
 
 body {
     margin: 0em;
+    color: #444444;
 }
 
 button {
@@ -160,7 +161,11 @@ table {
  */
 
 #noteContents {
-    margin: 0.3em;
-    font-size: 1em;
+    margin: 0.5em;
+    font-size: 1.2em;
     font-family: sans-serif;
+}
+
+#noteContents div {
+    margin-bottom: 0.1em;
 }
