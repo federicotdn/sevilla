@@ -1,0 +1,26 @@
+{
+    "name": "Sevilla",
+    "description": "Self-hosted instant notes.",
+    "repository": "https://github.com/federicotdn/sevilla",
+    "website": "https://github.com/federicotdn/sevilla",
+    "logo": "https://raw.githubusercontent.com/federicotdn/sevilla/master/sevilla/static/logo.png",
+    "keywords": ["notes", "self-hosted", "web", "instant", "lightweight"],
+    "env": {
+	"SEVILLA_PASSWORD": {
+	    "description": "Login password for web interface.",
+	    "generator": "secret"
+	},
+	"SECRET_KEY": {
+	    "description": "Secrey key for Flask session signing.",
+	    "generator": "secret"
+	}
+    },
+    "addons": [
+	{
+	    "plan": "heroku-postgresql:hobby-dev",
+	    "options": {
+		"version": "11.3"
+	    }
+	}
+    ]
+}
