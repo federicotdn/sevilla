@@ -31,6 +31,9 @@ lint:
 format:
 	black sevilla/
 
+deploy:
+	git push heroku master
+
 setup-jshint:
 	npm install jshint@2.10.2
 
