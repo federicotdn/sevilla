@@ -30,3 +30,9 @@ lint:
 
 format:
 	black sevilla/
+
+setup-jshint:
+	npm install jshint@2.10.2
+
+jshint:
+	node_modules/jshint/bin/jshint sevilla/static/*.js
