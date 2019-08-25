@@ -96,7 +96,7 @@ def get_note(note_id):
     if not NotesService.id_is_valid(note_id):
         abort(400)
 
-    return NotesService.get_note(note_id).contents
+    return render_template("view.html", note=NotesService.get_note(note_id))
 
 
 @frontend.route("/notes/<note_id>/hide", methods=["POST"])

@@ -3,7 +3,7 @@
  */
 
 body {
-    margin: 0px;
+    margin: 0em;
 }
 
 button {
@@ -153,4 +153,14 @@ table {
 
 #paginationButtonPrevious {
     float: left;
+}
+
+/*
+ * Note view
+ */
+
+#noteContents {
+    margin: 0.3em;
+    font-size: 1em;
+    font-family: sans-serif;
 }
