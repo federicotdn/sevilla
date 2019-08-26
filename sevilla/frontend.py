@@ -8,21 +8,20 @@ from sevilla.exceptions import PasswordNotSet, ModelException, NoteNotFound
 frontend = Blueprint("frontend", __name__)
 
 
-def redirect_login(f):
-    @wraps(f)
-    def fn(*args, **kwargs):
-        if not AuthService.is_valid_token(session.get("id")):
-            return redirect(url_for(".login"))
+def authenticated(redirect=True):
+    def wrap(f):
+        @wraps(f)
+        def wrapped_f(*args, **kwargs):
+            if not AuthService.is_valid_token(session.get("id")):
+                if redirect:
+                    return redirect(url_for(".login"))
+                else:
+                    abort(401)
 
-        return f(*args, **kwargs)
+            return f(*args, **kwargs)
 
-    return fn
-
-
-@frontend.route("/")
-@redirect_login
-def index():
-    return current_app.send_static_file("index.html")
+        return wrapped_f
+    return wrap
 
 
 @frontend.context_processor
@@ -35,8 +34,14 @@ def timestamp_millis():
     return {"timestamp_millis": fn}
 
 
+@frontend.route("/")
+@authenticated()
+def index():
+    return current_app.send_static_file("index.html")
+
+
 @frontend.route("/notes")
-@redirect_login
+@authenticated()
 def list_notes():
     try:
         page = int(request.args.get("page") or 1)
@@ -59,10 +64,8 @@ def list_notes():
 
 
 @frontend.route("/notes/<note_id>", methods=["POST"])
+@authenticated(redirect=False)
 def upsert_note(note_id):
-    if not AuthService.is_valid_token(session.get("id")):
-        abort(401)
-
     if not NotesService.id_is_valid(note_id):
         abort(400)
 
@@ -91,7 +94,7 @@ def upsert_note(note_id):
 
 
 @frontend.route("/notes/<note_id>")
-@redirect_login
+@authenticated()
 def get_note(note_id):
     if not NotesService.id_is_valid(note_id):
         abort(400)
@@ -100,7 +103,7 @@ def get_note(note_id):
 
 
 @frontend.route("/notes/<note_id>/hide", methods=["POST"])
-@redirect_login
+@authenticated()
 def hide_note(note_id):
     NotesService.hide_note(note_id)
     page = int(request.form.get("page"))
@@ -126,8 +129,7 @@ def login_page():
 @frontend.route("/login", methods=["POST"])
 def login():
     if AuthService.is_valid_password(request.form.get("password")):
-        token = AuthService.new_token()
-        session["id"] = token.id
+        session["id"] = AuthService.new_token().id
         session.permanent = True
 
         current_app.logger.info("New login with ID: {}.".format(session["id"]))
