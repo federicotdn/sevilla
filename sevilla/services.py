@@ -1,3 +1,4 @@
+import secrets
 from datetime import datetime
 from flask import current_app
 from sevilla.db import db, Token, Note
@@ -18,8 +19,7 @@ class NotesService:
         created = False
 
         if not note:
-            note = Note(id=note_id, contents=contents, modified=timestamp)
-            db.session.add(note)
+            db.session.add(Note(id=note_id, contents=contents, modified=timestamp))
             created = True
         else:
             note.update_contents(contents, timestamp)
@@ -92,7 +92,7 @@ class AuthService:
         if not app_password:
             raise PasswordNotSet
 
-        return app_password == password
+        return secrets.compare_digest(app_password, password)
 
     @staticmethod
     def new_token(expiration=None):
