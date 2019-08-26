@@ -21,6 +21,7 @@ def authenticated(redirect=True):
             return f(*args, **kwargs)
 
         return wrapped_f
+
     return wrap
 
 
