@@ -8,12 +8,12 @@ from sevilla.exceptions import PasswordNotSet, ModelException, NoteNotFound
 frontend = Blueprint("frontend", __name__)
 
 
-def authenticated(redirect=True):
+def authenticated(redirect_login=True):
     def wrap(f):
         @wraps(f)
         def wrapped_f(*args, **kwargs):
             if not AuthService.is_valid_token(session.get("id")):
-                if redirect:
+                if redirect_login:
                     return redirect(url_for(".login"))
                 else:
                     abort(401)
@@ -65,7 +65,7 @@ def list_notes():
 
 
 @frontend.route("/notes/<note_id>", methods=["POST"])
-@authenticated(redirect=False)
+@authenticated(redirect_login=False)
 def upsert_note(note_id):
     if not NotesService.id_is_valid(note_id):
         abort(400)
