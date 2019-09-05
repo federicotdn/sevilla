@@ -1,7 +1,7 @@
 import secrets
 import string
 from collections import namedtuple
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask_sqlalchemy import SQLAlchemy
 from flask import current_app
 from sevilla.exceptions import ModelException
@@ -23,8 +23,8 @@ class Token(db.Model):
         kwargs["id"] = secrets.token_hex(TOKEN_BYTES)
 
         if not kwargs.get("expiration"):
-            kwargs["expiration"] = (
-                datetime.utcnow() + current_app.config["PERMANENT_SESSION_LIFETIME"]
+            kwargs["expiration"] = datetime.utcnow() + timedelta(
+                seconds=current_app.config["PERMANENT_SESSION_LIFETIME"]
             )
 
         super().__init__(**kwargs)

@@ -1,5 +1,4 @@
 import os
-from datetime import timedelta
 from flask import Flask
 
 DEFAULT_CONFIG = {
@@ -7,7 +6,7 @@ DEFAULT_CONFIG = {
     "SQLALCHEMY_TRACK_MODIFICATIONS": False,
     "SESSION_COOKIE_SECURE": True,
     "SESSION_COOKIE_SAMESITE": "Strict",
-    "PERMANENT_SESSION_LIFETIME": timedelta(days=30),
+    "PERMANENT_SESSION_LIFETIME": 2678400,  # 31 days in seconds
     "MAX_CONTENT_LENGTH": 128 * 1024,
 }
 

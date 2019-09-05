@@ -1,6 +1,5 @@
 import random
-from tests import BaseTest
-from tests import utils
+from tests import BaseTest, utils
 from sevilla.services import NotesService
 from sevilla.exceptions import NoteNotFound
 
