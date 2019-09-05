@@ -44,23 +44,22 @@ class NotesService:
         db.session.commit()
 
     @staticmethod
-    def _pretty_preview(preview, max_preview_length):
+    def _pretty_preview(note, max_preview_length):
+        preview = note[:max_preview_length]
         lines = preview.splitlines()
-        first = lines[0]
+        first = lines[0].strip() if lines else ""
 
-        if not first.strip():
+        if not first:
             return "..."
 
         if len(first) < max_preview_length and len(lines) == 1:
             return first
 
-        return "{}...".format(first.rstrip())
+        return "{}...".format(first)
 
     @staticmethod
     def note_previews(
-        page=1,
-        page_size=DEFAULT_PAGE_SIZE,
-        max_preview_length=DEFAULT_MAX_PREVIEW_LENGTH,
+        page, page_size=DEFAULT_PAGE_SIZE, max_preview_length=DEFAULT_MAX_PREVIEW_LENGTH
     ):
         pagination = (
             db.session.query(

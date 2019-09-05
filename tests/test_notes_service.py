@@ -53,7 +53,7 @@ class TestNotesService(BaseTest):
         note = NotesService.get_note(VALID_ID)
         self.assertTrue(note.hidden)
 
-    def test_previews(self):
+    def test_previews_pagination(self):
         total_notes = random.randint(20, 50)
         page_size = 15
 
@@ -74,3 +74,31 @@ class TestNotesService(BaseTest):
             ids |= page_ids_set
 
             self.assertEqual(len(ids), previous_len + len(page_ids_set))
+
+    def test_pagination_hidden(self):
+        NotesService.upsert_note(VALID_ID, "Test", utils.now())
+        pagination = NotesService.note_previews(page=1)
+        self.assertEqual(len(pagination.items), 1)
+
+        NotesService.hide_note(VALID_ID)
+        pagination = NotesService.note_previews(page=1)
+        self.assertEqual(len(pagination.items), 0)
+
+    def test_pretty_preview(self):
+        notes_previews = [
+            ("hello", "hello"),
+            ("hello    ", "hello"),
+            ("hello    \nfoobar", "hello..."),
+            ("   hello", "hello"),
+            ("helloooooooooooooooo", "hellooooooooooo..."),
+            ("\nhello", "..."),
+            ("\n\n\nhello", "..."),
+            ("hello\nfoobar", "hello..."),
+            ("hello\nfooooooooooooooooo", "hello..."),
+            ("fooooooooooooooooo\nhello", "foooooooooooooo..."),
+            ("", "..."),
+        ]
+
+        for note, preview in notes_previews:
+            with self.subTest(note=note, preview=preview):
+                self.assertEqual(preview, NotesService._pretty_preview(note, 15))
