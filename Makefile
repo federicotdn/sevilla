@@ -24,12 +24,15 @@ routes:
 	FLASK_APP=sevilla \
 	flask routes
 
+test:
+	python3 -m unittest
+
 lint:
-	flake8 sevilla/
-	black --check sevilla/
+	flake8 sevilla/ tests/
+	black --check sevilla/ tests/
 
 format:
-	black sevilla/
+	black sevilla/ tests/
 
 deploy:
 	git push heroku master
