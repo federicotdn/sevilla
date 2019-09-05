@@ -52,6 +52,8 @@ def create_app(test_config=None):
     db.init_app(app)
     with app.app_context():
         db.create_all()
-        AuthService.delete_expired_tokens()
+        deleted = AuthService.delete_expired_tokens()
+        if deleted:
+            app.logger.info("Deleted {} expired user token(s).".format(deleted))
 
     return app

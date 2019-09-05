@@ -115,5 +115,6 @@ class AuthService:
 
     @staticmethod
     def delete_expired_tokens():
-        Token.query.filter(Token.expiration < datetime.utcnow()).delete()
+        deleted = Token.query.filter(Token.expiration < datetime.utcnow()).delete()
         db.session.commit()
+        return deleted
