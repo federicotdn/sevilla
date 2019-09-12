@@ -91,6 +91,9 @@ class AuthService:
         if not app_password:
             raise PasswordNotSet
 
+        if not password:
+            return False
+
         return secrets.compare_digest(app_password, password)
 
     @staticmethod

@@ -14,8 +14,10 @@ class BaseTest(unittest.TestCase):
 
         self.ctx = self.app.app_context()
         self.ctx.push()
+        self.client = self.app.test_client()
 
     def tearDown(self):
+        self.client = None
         self.ctx.pop()
         self.ctx = None
         self.app = None

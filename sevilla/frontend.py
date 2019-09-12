@@ -104,7 +104,7 @@ def get_note(note_id):
 
 
 @frontend.route("/notes/<note_id>/hide", methods=["POST"])
-@authenticated()
+@authenticated(redirect_login=False)
 def hide_note(note_id):
     NotesService.hide_note(note_id)
     page = int(request.form.get("page"))
