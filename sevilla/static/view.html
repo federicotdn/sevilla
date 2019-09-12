@@ -7,11 +7,4 @@
     <link rel="shortcut icon" href="/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
-  <body>
-    <div id="noteContents">
-      {% for line in note.contents.splitlines() %}
-      <div>{{ line }}<br/></div>
-      {% endfor %}
-    </div>
-  </body>
-</html>
+  <body><pre id="noteContents">{{ note.contents }}</pre></body></html>
