@@ -48,6 +48,7 @@ class TestFrontend(BaseTest):
         )
         self.assertEqual(rv.status_code, 200)
 
+        # Try sending again with older timestamp
         rv = self.client.post(
             "/notes/" + VALID_ID + "?timestamp=1000",
             data="bar",
@@ -59,22 +60,53 @@ class TestFrontend(BaseTest):
         self.assertEqual(note.contents, "foo")
         self.assertEqual(utils.timestamp_seconds(note.modified), 2)
 
-    def test_hide_note(self):
-        NotesService.upsert_note(VALID_ID, "hello", utils.now())
+    def test_try_update_note_invalid_timestamp(self):
         rv = self.client.post(
-            "/notes/" + VALID_ID + "/hide", data={"page": 1, "pageSize": 10}
+            "/notes/" + VALID_ID + "?timestamp=2000",
+            data="foo",
+            headers={"Content-type": "text/plain"},
         )
+        self.assertEqual(rv.status_code, 200)
 
-        self.assertEqual(rv.status_code, 302)
-        self.assertTrue(NotesService.get_note(VALID_ID).hidden)
+        # Try sending again with invalid timestamp
+        rv = self.client.post(
+            "/notes/" + VALID_ID + "?timestamp=foobar",
+            data="bar",
+            headers={"Content-type": "text/plain"},
+        )
+        self.assertEqual(rv.status_code, 200)
+
+        note = NotesService.get_note(VALID_ID)
+        self.assertEqual(note.contents, "foo")
+        self.assertEqual(utils.timestamp_seconds(note.modified), 2)
+
+    def test_hide_note(self):
+        params_list = [
+            {"page": 1, "pageSize": 10},
+            {"page": 1},
+            {"page": "foobar"},
+            {"page": "foobar", "pageSize": "foo"},
+        ]
+        NotesService.upsert_note(VALID_ID, "hello", utils.now())
+
+        for params in params_list:
+            with self.subTest(**params):
+                rv = self.client.post("/notes/" + VALID_ID + "/hide", data=params)
+
+                self.assertEqual(rv.status_code, 302)
+                self.assertTrue(NotesService.get_note(VALID_ID).hidden)
 
     def test_view_index(self):
         with self.client.get("/") as rv:
             self.assertEqual(rv.status_code, 200)
 
     def test_view_notes(self):
-        with self.client.get("/notes") as rv:
-            self.assertEqual(rv.status_code, 200)
+        urls = ["/notes", "/notes?page=1", "/notes?page=foobar"]
+
+        for url in urls:
+            with self.subTest(url=url):
+                with self.client.get(url) as rv:
+                    self.assertEqual(rv.status_code, 200)
 
     def test_view_note(self):
         NotesService.upsert_note(VALID_ID, "hello", utils.now())

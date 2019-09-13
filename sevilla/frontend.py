@@ -25,6 +25,20 @@ def authenticated(redirect_login=True):
     return wrap
 
 
+def form_int(key, default=0):
+    try:
+        return int(request.form.get(key))
+    except (ValueError, TypeError):
+        return default
+
+
+def args_int(key, default=0):
+    try:
+        return int(request.args.get(key))
+    except (ValueError, TypeError):
+        return default
+
+
 @frontend.context_processor
 def timestamp_millis():
     def fn(dt):
@@ -44,11 +58,7 @@ def index():
 @frontend.route("/notes")
 @authenticated()
 def list_notes():
-    try:
-        page = int(request.args.get("page") or 1)
-    except ValueError:
-        abort(400)
-
+    page = args_int("page", 1)
     pagination = NotesService.note_previews(page)
 
     url_previous = url_for(".list_notes")
@@ -70,11 +80,7 @@ def upsert_note(note_id):
     if not NotesService.id_is_valid(note_id):
         abort(400)
 
-    try:
-        timestamp_millis = int(request.args.get("timestamp"))
-    except (ValueError, TypeError):
-        abort(400)
-
+    timestamp_millis = args_int("timestamp")
     seconds = timestamp_millis // 1000
     millis = timestamp_millis % 1000
     timestamp = datetime.utcfromtimestamp(seconds) + timedelta(milliseconds=millis)
@@ -107,8 +113,8 @@ def get_note(note_id):
 @authenticated(redirect_login=False)
 def hide_note(note_id):
     NotesService.hide_note(note_id)
-    page = int(request.form.get("page"))
-    page_size = int(request.form.get("pageSize"))
+    page = form_int("page", 1)
+    page_size = form_int("pageSize")
 
     if page_size == 1:
         # We are hiding the last note on the page
