@@ -96,6 +96,17 @@ class TestFrontend(BaseTest):
                 self.assertEqual(rv.status_code, 302)
                 self.assertTrue(NotesService.get_note(VALID_ID).hidden)
 
+    def test_hide_invalid(self):
+        note_ids = [
+            VALID_ID,
+            "foobar"
+        ]
+
+        for note_id in note_ids:
+            with self.subTest(note_id=note_id):
+                rv = self.client.post("/notes/" + note_id + "/hide")
+                self.assertEqual(rv.status_code, 404)
+
     def test_view_index(self):
         with self.client.get("/") as rv:
             self.assertEqual(rv.status_code, 200)
@@ -112,6 +123,13 @@ class TestFrontend(BaseTest):
         NotesService.upsert_note(VALID_ID, "hello", utils.now())
         with self.client.get("/notes/" + VALID_ID) as rv:
             self.assertEqual(rv.status_code, 200)
+
+    def test_view_note_invalid(self):
+        with self.client.get("/notes/" + VALID_ID) as rv:
+            self.assertEqual(rv.status_code, 404)
+
+        with self.client.get("/notes/abc") as rv:
+            self.assertEqual(rv.status_code, 404)
 
 
 class TestFrontendNoLogin(BaseTest):
