@@ -97,10 +97,7 @@ class TestFrontend(BaseTest):
                 self.assertTrue(NotesService.get_note(VALID_ID).hidden)
 
     def test_hide_invalid(self):
-        note_ids = [
-            VALID_ID,
-            "foobar"
-        ]
+        note_ids = [VALID_ID, "foobar"]
 
         for note_id in note_ids:
             with self.subTest(note_id=note_id):
