@@ -80,6 +80,9 @@ def upsert_note(note_id):
     if not NotesService.id_is_valid(note_id):
         abort(400)
 
+    if request.content_length > current_app.config["MAX_NOTE_LENGTH"]:
+        abort(413)
+
     timestamp_millis = args_int("timestamp")
     seconds = timestamp_millis // 1000
     millis = timestamp_millis % 1000

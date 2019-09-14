@@ -80,6 +80,23 @@ class TestFrontend(BaseTest):
         self.assertEqual(note.contents, "foo")
         self.assertEqual(utils.timestamp_seconds(note.modified), 2)
 
+    def test_try_large_upload(self):
+        self.app.config["MAX_NOTE_LENGTH"] = 5
+
+        rv = self.client.post(
+            "/notes/" + VALID_ID + "?timestamp=1",
+            data="abcd",
+            headers={"Content-type": "text/plain"},
+        )
+        self.assertEqual(rv.status_code, 200)
+
+        rv = self.client.post(
+            "/notes/" + VALID_ID + "?timestamp=2",
+            data="abcdefgh",
+            headers={"Content-type": "text/plain"},
+        )
+        self.assertEqual(rv.status_code, 413)
+
     def test_hide_note(self):
         params_list = [
             {"page": 1, "pageSize": 10},

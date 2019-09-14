@@ -54,6 +54,16 @@ class Note(db.Model):
             and len(identifier) == NOTE_ID_BYTES * 2
         )
 
+    @db.validates("contents")
+    def validate_contents(self, _key, contents):
+        max_len = current_app.config["MAX_NOTE_LENGTH"]
+        if len(contents) > max_len:
+            raise ModelException(
+                "Max note length is {}. Got: {}.".format(max_len, len(contents))
+            )
+
+        return contents
+
     @db.validates("id")
     def validate_id(self, _key, identifier):
         if not self.id_is_valid(identifier):
