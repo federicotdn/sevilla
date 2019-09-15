@@ -5,7 +5,6 @@ const LOAD_COLOR = "#A0A0A0";
 const ERR_COLOR = "#CC3232";
 const SEND_INTERVAL_MS = 1 * 1000;
 const RETRY_INTERVAL_MS = 4 * 1000;
-const NOTE_ID_BITS = 128;
 
 var indicatorOk = true;
 var noteId = null;
