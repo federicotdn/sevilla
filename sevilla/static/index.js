@@ -17,7 +17,7 @@ var initialTitle = null;
 
 window.addEventListener("DOMContentLoaded", () => {
     initialTitle = document.title;
-    noteId = generateID();
+    noteId = document.getElementById("noteId").innerText;
 
     noteElem = document.getElementById("noteText");
     noteElem.value = "";
@@ -53,17 +53,6 @@ function indicatorClicked() {
 }
 
 function noteModified() {
-    if (noteElem.value.length === 0) {
-	// The user erased the entire contents of the note.  Instead
-	// of overwriting the old one, start a new note.  This is
-	// useful in iOS Web Applications where the state of the page
-	// is sometimes cached and when the app opens the previous
-	// note is still there.  It gives the user an oportunity to
-	// start a new note without having to refresh.
-	noteId = generateID();
-	return;
-    }
-
     setIndicatorColor(LOAD_COLOR);
     scheduleUploadNote(SEND_INTERVAL_MS);
 }
@@ -79,18 +68,6 @@ function scheduleUploadNote(interval) {
 	lastTimeout = null;
 	uploadNote();
     }, interval);
-}
-
-function generateID() {
-    var array = new Uint8Array(NOTE_ID_BITS / 8);
-    window.crypto.getRandomValues(array);
-    var id = Array.from(array).map(n => n.toString(16).padStart(2, "0")).join("");
-
-    if (id.length !== NOTE_ID_BITS / 4) {
-	return null;
-    }
-
-    return id;
 }
 
 function uploadNote() {

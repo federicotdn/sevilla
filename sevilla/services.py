@@ -37,6 +37,10 @@ class NotesService:
         return note
 
     @staticmethod
+    def generate_note_id():
+        return Note.generate_id()
+
+    @staticmethod
     def hide_note(note_id):
         NotesService.get_note(note_id).hidden = True
         db.session.commit()

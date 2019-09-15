@@ -42,7 +42,7 @@ def args_int(key, default=0):
 @frontend.route("/")
 @authenticated()
 def index():
-    return render_template("index.html")
+    return render_template("index.html", note_id=NotesService.generate_note_id())
 
 
 @frontend.route("/notes")

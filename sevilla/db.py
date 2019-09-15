@@ -62,6 +62,10 @@ class Note(db.Model):
         return int(utc_dt.timestamp() * 1000)
 
     @classmethod
+    def generate_id(cls):
+        return secrets.token_hex(NOTE_ID_BYTES)
+
+    @classmethod
     def id_is_valid(cls, identifier):
         return (
             identifier

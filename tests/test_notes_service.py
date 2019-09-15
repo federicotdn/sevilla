@@ -57,7 +57,9 @@ class TestNotesService(BaseTest):
         page_size = 15
 
         for _ in range(total_notes):
-            NotesService.upsert_note(utils.generate_note_id(), "Test", utils.now())
+            NotesService.upsert_note(
+                NotesService.generate_note_id(), "Test", utils.now()
+            )
 
         ids = set()
 
@@ -101,6 +103,6 @@ class TestNotesService(BaseTest):
         for note, preview in notes_previews:
             with self.subTest(note=note, preview=preview):
                 note = NotesService.upsert_note(
-                    utils.generate_note_id(), note, utils.now()
+                    NotesService.generate_note_id(), note, utils.now()
                 )
                 self.assertEqual(preview, note.preview(15))
