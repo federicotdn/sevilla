@@ -1,49 +1,42 @@
-<!doctype html>
-<html lang=en>
-  <head>
-    <meta charset=utf-8>
-    <title>Sevilla</title>
-    <script src="/notes.js"></script>
-    <link rel="stylesheet" href="/style.css">
-    <link rel="shortcut icon" href="/favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-  </head>
-  <body>
-    <a href="{{ url_for('.index') }}"><button class="textButton" id="backButton">Write</button></a>
-    <table>
-      <thead id="notesTableHeader">
-	<tr>
-	  <td>Time</td>
-	  <td>Note</td>
-	  <td>Hide</td>
-	</tr>
-      </thead>
-      <tbody id="notesTable">
-	{%- for item in pagination.items  %}
-	<tr>
-	  <td class="noteTimestamp">{{ timestamp_millis(item.modified) }}</td>
-	  <td><a href="{{ url_for('.get_note', note_id=item.id) }}">{{ item.text }}</a></td>
-	  <td>
-	    <form action="{{ url_for('.hide_note', note_id=item.id) }}" method="post">
-	      <input name="pageSize" type="hidden" value="{{ pagination.items|length }}">
-	      <input name="page" type="hidden" value="{{ pagination.page  }}">
-	      <button>✕</button>
-	    </form>
-	  </td>
-	</tr>
-	{%- endfor %}
-      </tbody>
-    </table>
-    {% if not pagination.items %}
-    <h2 id="noNotesHeader">No notes to show.</h2>
+{% extends "base.html" %}
+{% block script %}<script src="/notes.js"></script>{% endblock %}
+{% block body %}
+<body>
+  <a href="{{ url_for('.index') }}"><button class="textButton" id="backButton">Write</button></a>
+  <table>
+    <thead id="notesTableHeader">
+      <tr>
+	<td>Time</td>
+	<td>Note</td>
+	<td>Hide</td>
+      </tr>
+    </thead>
+    <tbody id="notesTable">
+      {%- for item in pagination.items  %}
+      <tr>
+	<td class="noteTimestamp">{{ timestamp_millis(item.modified) }}</td>
+	<td><a href="{{ url_for('.get_note', note_id=item.id) }}">{{ item.text }}</a></td>
+	<td>
+	  <form action="{{ url_for('.hide_note', note_id=item.id) }}" method="post">
+	    <input name="pageSize" type="hidden" value="{{ pagination.items|length }}">
+	    <input name="page" type="hidden" value="{{ pagination.page  }}">
+	    <button>✕</button>
+	  </form>
+	</td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+  {% if not pagination.items %}
+  <h3 id="noNotesHeader">No notes to show.</h3>
+  {% endif %}
+  <div id="paginationButtons">
+    {% if pagination.has_prev %}
+    <a href="{{ url_previous  }}"><button id="paginationButtonPrevious"><b>←</b></button></a>
     {% endif %}
-    <div id="paginationButtons">
-      {% if pagination.has_prev %}
-      <a href="{{ url_previous  }}"><button id="paginationButtonPrevious"><b>←</b></button></a>
-      {% endif %}
-      {% if pagination.has_next %}
-      <a href="{{ url_next }}"><button id="paginationButtonNext"><b>→</b></button></a>
-      {% endif %}
-    </div>
-  </body>
-</html>
+    {% if pagination.has_next %}
+    <a href="{{ url_next }}"><button id="paginationButtonNext"><b>→</b></button></a>
+    {% endif %}
+  </div>
+</body>
+{% endblock %}

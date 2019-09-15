@@ -13,8 +13,10 @@ var noteElem = null;
 var lastTimeout = null;
 var lastTimestamp = null;
 var indicatorElem = null;
+var initialTitle = null;
 
 window.addEventListener("DOMContentLoaded", () => {
+    initialTitle = document.title;
     noteId = generateID();
 
     noteElem = document.getElementById("noteText");
@@ -34,9 +36,9 @@ function setIndicatorColor(color) {
     indicatorOk = (color === OK_COLOR);
 
     if (color !== LOAD_COLOR) {
-	document.title = "Sevilla";
+	document.title = initialTitle;
     } else {
-	document.title = "*Sevilla";
+	document.title = "*" + initialTitle;
     }
 
     indicatorElem.style.cursor = indicatorOk ? "pointer" : "default";

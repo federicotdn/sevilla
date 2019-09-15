@@ -1,14 +1,7 @@
-<!doctype html>
-<html lang=en>
-  <head>
-    <meta charset=utf-8>
-    <title>Sevilla</title>
-    <script src="/index.js"></script>
-    <link rel="stylesheet" href="/style.css">
-    <link rel="shortcut icon" href="/favicon.ico">
-  </head>
-  <body>
-    <div id="indicator"></div>
-    <textarea placeholder=" Write or paste here" autofocus id="noteText"></textarea>
-  </body>
-</html>
+{% extends "base.html" %}
+{% block script %}<script src="/index.js"></script>{% endblock %}
+{% block meta %}{% endblock %}
+{% block body %}
+<div id="indicator"></div>
+<textarea placeholder=" Write or paste here" autofocus id="noteText"></textarea>
+{% endblock %}

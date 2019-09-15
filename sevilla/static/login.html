@@ -1,23 +1,14 @@
-<!doctype html>
-<html lang=en>
-  <head>
-    <meta charset=utf-8>
-    <title>Sevilla</title>
-    <link rel="stylesheet" href="/style.css">
-    <link rel="shortcut icon" href="/favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-  </head>
-  <body>
-    <form action="/login" method="post" id="loginForm">
-      <a href="https://github.com/federicotdn/sevilla">
-	<img src="logo.png" alt="Sevilla logo" height="192" width="192" id="loginLogo">
-      </a>
-      <div>
-	<input name="password" id="passwordField" value="" type="password" placeholder="Password">
-      </div>
-      <div>
-	<button id="loginButton" class="textButton">Login</button>
-      </div>
-    </form>
-  </body>
-</html>
+{% extends "base.html" %}
+{% block body %}
+<form action="/login" method="post" id="loginForm">
+  <a href="https://github.com/federicotdn/sevilla">
+    <img src="logo.png" alt="Sevilla logo" height="192" width="192" id="loginLogo">
+  </a>
+  <div>
+    <input name="password" id="passwordField" value="" type="password" placeholder="Password">
+  </div>
+  <div>
+    <button id="loginButton" class="textButton">Login</button>
+  </div>
+</form>
+{% endblock %}

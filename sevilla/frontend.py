@@ -52,7 +52,7 @@ def timestamp_millis():
 @frontend.route("/")
 @authenticated()
 def index():
-    return current_app.send_static_file("index.html")
+    return render_template("index.html")
 
 
 @frontend.route("/notes")
@@ -130,7 +130,7 @@ def login_page():
     if AuthService.is_valid_token(session.get("id")):
         return redirect(url_for(".index"))
 
-    return current_app.send_static_file("login.html")
+    return render_template("login.html")
 
 
 @frontend.route("/login", methods=["POST"])
