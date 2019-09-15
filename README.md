@@ -7,4 +7,25 @@
   <a href="http://vanilla-js.com/"><img alt="Vanilla JS" src="https://img.shields.io/static/v1?label=vanilla&message=js&labelColor=e8b730&color=555555"></a>
 </p>
 
-Self-hosted instant notes.
+The objective of Sevilla is to allow you to quickly write down notes on your computer and mobile phone and read them at another time.
+
+Sevilla tries to be as lightweight as possible, and avoids adding any unecessary steps between having an idea or thought and writing it down. Sevilla doesn't aim to be a full-fledged notes management system, and therefore has a very limited set of features.
+
+Other properties of Sevilla include:
+
+- It's completely self-hosted and uses an SQL database to store notes (tested on SQLite and PostgreSQL).
+- Uses Flask and SQLAlchemy on the backend side.
+- Has a minimalistic frontend made with vanilla JavaScript, making it quick to load.
+- Can be used as a clipboard between devices.
+- It works pretty well on slow connections (tested on EDGE).
+
+## Screenshots
+TODO
+
+## Deploying
+TODO
+
+## License
+Copyright © 2019 Federico Tedin.
+
+Distributed under the GNU General Public License, version 3.
