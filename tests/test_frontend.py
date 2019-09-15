@@ -21,6 +21,17 @@ class TestFrontend(BaseTest):
         note = NotesService.get_note(VALID_ID)
         self.assertEqual(note.contents, "Hello, world!")
 
+    def test_create_empty_note(self):
+        rv = self.client.post(
+            "/notes/" + VALID_ID + "?timestamp=1",
+            data="",
+            headers={"Content-type": "text/plain"},
+        )
+        self.assertEqual(rv.status_code, 200)
+
+        note = NotesService.get_note(VALID_ID)
+        self.assertEqual(note.contents, "")
+
     def test_update_note(self):
         rv = self.client.post(
             "/notes/" + VALID_ID + "?timestamp=1000",

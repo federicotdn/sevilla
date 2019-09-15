@@ -70,13 +70,6 @@ function scheduleUploadNote(interval) {
 }
 
 function uploadNote() {
-    if (noteElem.value.length === 0) {
-	// Do not send out an empty note - cancel send.
-	setIndicatorColor(OK_COLOR);
-	lastTimestamp = null;
-	return;
-    }
-
     var timestamp = Date.now();
     var params = new URLSearchParams({
 	"timestamp": timestamp
