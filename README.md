@@ -20,7 +20,9 @@ Other properties of Sevilla include:
 - It works pretty well on slow connections (tested on EDGE).
 
 ## Screenshots
-TODO
+<p align="center">
+  <img alt="Sevilla" src="https://user-images.githubusercontent.com/6868935/64915149-ef1d0700-d760-11e9-9c7d-8ee9c3bee664.gif" width="40%">
+</p>
 
 ## Deploying
 TODO
