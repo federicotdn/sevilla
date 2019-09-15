@@ -12,12 +12,12 @@
       </tr>
     </thead>
     <tbody id="notesTable">
-      {%- for item in pagination.items  %}
+      {%- for note in pagination.items  %}
       <tr>
-	<td class="noteTimestamp">{{ timestamp_millis(item.modified) }}</td>
-	<td><a href="{{ url_for('.get_note', note_id=item.id) }}">{{ item.text }}</a></td>
+	<td class="noteTimestamp">{{ note.modified_millis() }}</td>
+	<td><a href="{{ url_for('.get_note', note_id=note.id) }}">{{ note.preview() }}</a></td>
 	<td>
-	  <form action="{{ url_for('.hide_note', note_id=item.id) }}" method="post">
+	  <form action="{{ url_for('.hide_note', note_id=note.id) }}" method="post">
 	    <input name="pageSize" type="hidden" value="{{ pagination.items|length }}">
 	    <input name="page" type="hidden" value="{{ pagination.page  }}">
 	    <button>✕</button>

@@ -1,5 +1,5 @@
 from functools import wraps
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from flask import Blueprint, current_app, request, session, redirect, url_for
 from flask import abort, render_template
 from sevilla.services import AuthService, NotesService
@@ -39,16 +39,6 @@ def args_int(key, default=0):
         return default
 
 
-@frontend.context_processor
-def timestamp_millis():
-    def fn(dt):
-        # Ensure the datetime object is aware first
-        utc_dt = dt.replace(tzinfo=timezone.utc)
-        return int(utc_dt.timestamp() * 1000)
-
-    return {"timestamp_millis": fn}
-
-
 @frontend.route("/")
 @authenticated()
 def index():
@@ -59,7 +49,7 @@ def index():
 @authenticated()
 def list_notes():
     page = args_int("page", 1)
-    pagination = NotesService.note_previews(page)
+    pagination = NotesService.paginate_notes(page)
 
     url_previous = url_for(".list_notes")
     if pagination.prev_num and pagination.prev_num > 1:
@@ -90,15 +80,12 @@ def upsert_note(note_id):
     contents = request.get_data(as_text=True)
 
     try:
-        created = NotesService.upsert_note(note_id, contents, timestamp)
+        NotesService.upsert_note(note_id, contents, timestamp)
     except ModelException as e:
         current_app.logger.error(e)
         abort(500)
 
-    if created:
-        current_app.logger.info("New note created with ID: {}.".format(note_id))
-    else:
-        current_app.logger.info("Updated note with ID: {}.".format(note_id))
+    current_app.logger.info("Note ID {} created/updated.".format(note_id))
 
     return {"id": note_id, "timestamp": timestamp_millis}
 

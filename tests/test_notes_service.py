@@ -62,11 +62,11 @@ class TestNotesService(BaseTest):
         ids = set()
 
         for i in range(1, 1 + total_notes // page_size):
-            pagination = NotesService.note_previews(page=i, page_size=page_size)
+            pagination = NotesService.paginate_notes(page=i, page_size=page_size)
             self.assertLessEqual(len(pagination.items), page_size)
             self.assertGreater(len(pagination.items), 0)
 
-            page_ids_set = {preview.id for preview in pagination.items}
+            page_ids_set = {note.id for note in pagination.items}
             self.assertEqual(len(page_ids_set), len(pagination.items))
 
             previous_len = len(ids)
@@ -76,11 +76,11 @@ class TestNotesService(BaseTest):
 
     def test_pagination_hidden(self):
         NotesService.upsert_note(VALID_ID, "Test", utils.now())
-        pagination = NotesService.note_previews(page=1)
+        pagination = NotesService.paginate_notes(page=1)
         self.assertEqual(len(pagination.items), 1)
 
         NotesService.hide_note(VALID_ID)
-        pagination = NotesService.note_previews(page=1)
+        pagination = NotesService.paginate_notes(page=1)
         self.assertEqual(len(pagination.items), 0)
 
     def test_pretty_preview(self):
@@ -100,4 +100,7 @@ class TestNotesService(BaseTest):
 
         for note, preview in notes_previews:
             with self.subTest(note=note, preview=preview):
-                self.assertEqual(preview, NotesService._pretty_preview(note, 15))
+                note = NotesService.upsert_note(
+                    utils.generate_note_id(), note, utils.now()
+                )
+                self.assertEqual(preview, note.preview(15))

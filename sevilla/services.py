@@ -4,7 +4,6 @@ from flask import current_app
 from sevilla.db import db, Token, Note
 from sevilla.exceptions import PasswordNotSet, NoteNotFound
 
-DEFAULT_MAX_PREVIEW_LENGTH = 20
 DEFAULT_PAGE_SIZE = 15
 
 
@@ -16,16 +15,15 @@ class NotesService:
     @staticmethod
     def upsert_note(note_id, contents, timestamp):
         note = Note.query.get(note_id)
-        created = False
 
         if not note:
-            db.session.add(Note(id=note_id, contents=contents, modified=timestamp))
-            created = True
+            note = Note(id=note_id, contents=contents, modified=timestamp)
+            db.session.add(note)
         else:
             note.update_contents(contents, timestamp)
 
         db.session.commit()
-        return created
+        return note
 
     @staticmethod
     def get_note(note_id):
@@ -44,44 +42,12 @@ class NotesService:
         db.session.commit()
 
     @staticmethod
-    def _pretty_preview(note, max_preview_length):
-        preview = note[:max_preview_length]
-        lines = preview.splitlines()
-        first = lines[0].strip() if lines else ""
-
-        if not first:
-            return "..."
-
-        if len(first) < max_preview_length and len(lines) == 1:
-            return first
-
-        return "{}...".format(first)
-
-    @staticmethod
-    def note_previews(
-        page, page_size=DEFAULT_PAGE_SIZE, max_preview_length=DEFAULT_MAX_PREVIEW_LENGTH
-    ):
-        pagination = (
-            db.session.query(
-                Note.id,
-                Note.modified,
-                db.func.substr(Note.contents, 1, max_preview_length),
-            )
-            .filter(Note.hidden == db.false())
+    def paginate_notes(page, page_size=DEFAULT_PAGE_SIZE):
+        return (
+            Note.query.filter(Note.hidden == db.false())
             .order_by(Note.modified.desc())
             .paginate(page, per_page=page_size)
         )
-
-        pagination.items = [
-            Note.Preview(
-                item[0],
-                item[1],
-                NotesService._pretty_preview(item[2], max_preview_length),
-            )
-            for item in pagination.items
-        ]
-
-        return pagination
 
 
 class AuthService:
