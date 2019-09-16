@@ -1,3 +1,4 @@
+import urllib.parse
 from functools import wraps
 from datetime import datetime, timedelta
 from flask import Blueprint, current_app, request, session, redirect, url_for
@@ -44,6 +45,19 @@ def args_int(key, default=0):
         return default
 
 
+def is_note_link(note):
+    lines = note.contents.splitlines()
+    if len(lines) != 1:
+        return False
+
+    parts = lines[0].split()
+    if len(parts) != 1:
+        return False
+
+    scheme = urllib.parse.urlparse(parts[0]).scheme
+    return scheme in ["https", "http"]
+
+
 @frontend.route("/")
 @authenticated()
 def index():
@@ -86,8 +100,8 @@ def upsert_note(note_id):
 
     try:
         NotesService.upsert_note(note_id, contents, timestamp)
-    except ModelException as e:
-        current_app.logger.error(e)
+    except ModelException:
+        current_app.logger.exception("Error storing note:")
         abort(500)
 
     current_app.logger.info("Note ID {} created/updated.".format(note_id))
@@ -98,7 +112,11 @@ def upsert_note(note_id):
 @frontend.route("/notes/<note_id>")
 @authenticated()
 def get_note(note_id):
-    return render_template("view.html", note=NotesService.get_note(note_id))
+    note = NotesService.get_note(note_id)
+    is_link = is_note_link(note)
+    template = "view-link.html" if is_link else "view.html"
+
+    return render_template(template, contents=note.contents)
 
 
 @frontend.route("/notes/<note_id>/hide", methods=["POST"])

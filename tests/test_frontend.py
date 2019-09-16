@@ -1,3 +1,4 @@
+from sevilla.frontend import is_note_link
 from sevilla.services import NotesService
 from tests import BaseTest, utils
 from tests.test_notes_service import VALID_ID
@@ -165,6 +166,24 @@ class TestFrontend(BaseTest):
 
         with self.client.get("/notes/abc") as rv:
             self.assertEqual(rv.status_code, 404)
+
+    def test_note_is_link(self):
+        notes = [
+            ("http://example.com", True),
+            ("https://place.com", True),
+            ("https://place.com/foobar", True),
+            ("https://place.com/foobar#foo", True),
+            ("https://place.com/foobar?q=hello", True),
+            ("hello there", False),
+            ("something\nsomething", False),
+            ("http://hello.com\nmore stuff", False),
+            ("", False),
+        ]
+
+        for note, is_link in notes:
+            with self.subTest(note=note):
+                note = NotesService.upsert_note(VALID_ID, note, utils.now())
+                self.assertEqual(is_note_link(note), is_link)
 
 
 class TestFrontendNoLogin(BaseTest):
