@@ -3,7 +3,12 @@ from datetime import datetime, timedelta
 from flask import Blueprint, current_app, request, session, redirect, url_for
 from flask import abort, render_template
 from sevilla.services import AuthService, NotesService
-from sevilla.exceptions import PasswordNotSet, ModelException, NoteNotFound
+from sevilla.exceptions import (
+    PasswordNotSet,
+    ModelException,
+    NoteNotFound,
+    TokenNotFound,
+)
 
 frontend = Blueprint("frontend", __name__)
 
@@ -122,14 +127,22 @@ def login_page():
 
 @frontend.route("/login", methods=["POST"])
 def login():
-    if AuthService.is_valid_password(request.form.get("password")):
-        session["id"] = AuthService.new_token().id
-        session.permanent = True
-
-        current_app.logger.info("New login with ID: {}.".format(session["id"]))
-        return redirect(url_for(".index"))
-    else:
+    if not AuthService.is_valid_password(request.form.get("password")):
         abort(401)
+
+    session["id"] = AuthService.new_token().id
+    session.permanent = True
+
+    current_app.logger.info("New login with ID: {}.".format(session["id"]))
+    return redirect(url_for(".index"))
+
+
+@frontend.route("/logout", methods=["POST"])
+@authenticated(redirect_login=False)
+def logout():
+    AuthService.delete_token(session["id"])
+    session.clear()
+    return redirect(url_for(".login"))
 
 
 @frontend.errorhandler(PasswordNotSet)
@@ -141,3 +154,8 @@ def handle_password_not_set(_):
 @frontend.errorhandler(NoteNotFound)
 def handle_note_not_found(_):
     return "Note not found", 404
+
+
+@frontend.errorhandler(TokenNotFound)
+def handle_token_not_found(_):
+    return "Token not found", 404

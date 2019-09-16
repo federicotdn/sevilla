@@ -48,3 +48,9 @@ class TestAuthService(BaseTest):
         self.assertEqual(Token.query.count(), 1)
         AuthService.delete_expired_tokens()
         self.assertEqual(Token.query.count(), 0)
+
+    def test_delete_token(self):
+        token = AuthService.new_token()
+        self.assertEqual(Token.query.count(), 1)
+        AuthService.delete_token(token.id)
+        self.assertEqual(Token.query.count(), 0)

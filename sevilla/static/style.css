@@ -133,6 +133,17 @@ table {
     color: #FFFFFF;
 }
 
+#logoutButton {
+    margin-top: 0.8em;
+    margin-right: 0.8em;
+    float: right;
+    background: #EEEEEE;
+}
+
+#logoutForm {
+    float: right;
+}
+
 #paginationButtons {
     margin: auto;
     width: 30%;

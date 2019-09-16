@@ -5,6 +5,9 @@
 {% block body %}
 <body>
   <a href="{{ url_for('.index') }}"><button class="textButton" id="backButton">Write</button></a>
+  <form id="logoutForm" action="{{ url_for('.logout') }}" method="post">
+    <button class="textButton" id="logoutButton">Log out</button>
+  </form>
   <table>
     <thead id="notesTableHeader">
       <tr>

@@ -10,6 +10,16 @@ class TestFrontend(BaseTest):
             "/login", data={"password": self.app.config["SEVILLA_PASSWORD"]}
         )
 
+    def test_logout(self):
+        rv = self.client.get("/")
+        self.assertEqual(rv.status_code, 200)
+
+        rv = self.client.post("/logout")
+        self.assertEqual(rv.status_code, 302)
+
+        rv = self.client.post("/notes/" + VALID_ID)
+        self.assertEqual(rv.status_code, 401)
+
     def test_create_note(self):
         rv = self.client.post(
             "/notes/" + VALID_ID + "?timestamp=1",

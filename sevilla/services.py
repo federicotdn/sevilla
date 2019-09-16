@@ -2,7 +2,7 @@ import secrets
 from datetime import datetime
 from flask import current_app
 from sevilla.db import db, Token, Note
-from sevilla.exceptions import PasswordNotSet, NoteNotFound
+from sevilla.exceptions import PasswordNotSet, NoteNotFound, TokenNotFound
 
 DEFAULT_PAGE_SIZE = 15
 
@@ -84,6 +84,15 @@ class AuthService:
             return False
 
         return token.expiration > datetime.utcnow()
+
+    @staticmethod
+    def delete_token(token_id):
+        token = Token.query.get(token_id)
+        if not token:
+            raise TokenNotFound
+
+        db.session.delete(token)
+        db.session.commit()
 
     @staticmethod
     def delete_expired_tokens():

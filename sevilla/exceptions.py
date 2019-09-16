@@ -8,3 +8,7 @@ class ModelException(Exception):
 
 class NoteNotFound(Exception):
     pass
+
+
+class TokenNotFound(Exception):
+    pass
