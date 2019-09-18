@@ -147,13 +147,26 @@ class TestFrontend(BaseTest):
         with self.client.get("/") as rv:
             self.assertEqual(rv.status_code, 200)
 
+    def test_view_notes_empty(self):
+        with self.client.get("/notes") as rv:
+            self.assertEqual(rv.status_code, 200)
+
     def test_view_notes(self):
+        for _ in range(50):
+            NotesService.upsert_note(
+                NotesService.generate_note_id(), "hello", utils.now()
+            )
+
         urls = ["/notes", "/notes?page=1", "/notes?page=foobar"]
 
         for url in urls:
             with self.subTest(url=url):
                 with self.client.get(url) as rv:
                     self.assertEqual(rv.status_code, 200)
+
+    def test_view_notes_range(self):
+        with self.client.get("/notes?page=1000") as rv:
+            self.assertEqual(rv.status_code, 404)
 
     def test_view_note(self):
         NotesService.upsert_note(VALID_ID, "hello", utils.now())

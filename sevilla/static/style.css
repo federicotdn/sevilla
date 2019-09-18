@@ -151,6 +151,15 @@ table {
     margin-bottom: 3em;
 }
 
+#pageIndicator {
+    text-align: center;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    width: 100vw;
+    font-size: 1em;
+    font-family: sans-serif;
+}
+
 #noNotesHeader {
     width: 100%;
     margin-top: 1em;

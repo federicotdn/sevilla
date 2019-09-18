@@ -34,7 +34,7 @@
   </table>
   {% if not pagination.items %}
   <h3 id="noNotesHeader">No notes to show.</h3>
-  {% endif %}
+  {% else %}
   <div id="paginationButtons">
     {% if pagination.has_prev %}
     <a href="{{ url_previous  }}"><button id="paginationButtonPrevious"><b>←</b></button></a>
@@ -43,5 +43,7 @@
     <a href="{{ url_next }}"><button id="paginationButtonNext"><b>→</b></button></a>
     {% endif %}
   </div>
+  <div id="pageIndicator">{{ pagination.page }}/{{ pagination.pages }} ({{ pagination.total }})</div>
+  {% endif %}
 </body>
 {% endblock %}
