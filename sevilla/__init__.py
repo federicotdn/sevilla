@@ -2,12 +2,13 @@ import os
 from flask import Flask
 
 DEFAULT_CONFIG = {
-    "SQLALCHEMY_DATABASE_URI": "sqlite:///../sevilla.db",
+    "SQLALCHEMY_DATABASE_URI": None,
     "SQLALCHEMY_TRACK_MODIFICATIONS": False,
     "SESSION_COOKIE_SECURE": True,
     "SESSION_COOKIE_SAMESITE": "Strict",
     "PERMANENT_SESSION_LIFETIME": 2678400,  # 31 days in seconds
     "MAX_NOTE_LENGTH": 128 * 1024,
+    "SEVILLA_PASSWORD": None,
 }
 
 
@@ -38,19 +39,24 @@ def create_app(test_config=None):
 
     if not test_config:
         read_env_config(app)
-        app.config["SEVILLA_PASSWORD"] = os.environ.get("SEVILLA_PASSWORD")
     else:
         app.config.from_mapping(test_config)
 
     from sevilla.frontend import frontend
-    from sevilla.db import db
+    from sevilla.db import db, migrate, upgrade_db
     from sevilla.services import AuthService
 
     app.register_blueprint(frontend)
 
     db.init_app(app)
+    migrate.init_app(app)
+
     with app.app_context():
-        db.create_all()
+        if test_config:
+            db.create_all()
+        else:
+            upgrade_db()
+
         deleted = AuthService.delete_expired_tokens()
         if deleted:
             app.logger.info("Deleted {} expired user token(s).".format(deleted))

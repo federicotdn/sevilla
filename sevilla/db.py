@@ -2,6 +2,7 @@ import secrets
 import string
 from datetime import datetime, timedelta, timezone
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate, upgrade
 from flask import current_app
 from sevilla.exceptions import ModelException
 
@@ -10,6 +11,11 @@ NOTE_ID_BYTES = 16
 DEFAULT_MAX_PREVIEW_LENGTH = 20
 
 db = SQLAlchemy()
+migrate = Migrate(db=db)
+
+
+def upgrade_db():
+    upgrade()
 
 
 class Token(db.Model):
