@@ -176,6 +176,12 @@ table {
     float: left;
 }
 
+.noteLink {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
 /*
  * Note view
  */

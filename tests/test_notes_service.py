@@ -89,15 +89,15 @@ class TestNotesService(BaseTest):
         notes_previews = [
             ("hello", "hello"),
             ("hello    ", "hello"),
-            ("hello    \nfoobar", "hello..."),
+            ("hello    \nfoobar", "hello"),
             ("   hello", "hello"),
-            ("helloooooooooooooooo", "hellooooooooooo..."),
-            ("\nhello", "..."),
-            ("\n\n\nhello", "..."),
-            ("hello\nfoobar", "hello..."),
-            ("hello\nfooooooooooooooooo", "hello..."),
-            ("fooooooooooooooooo\nhello", "foooooooooooooo..."),
-            ("", "..."),
+            ("helloooooooooooooooo", "hellooooooooooo"),
+            ("\nhello", "hello"),
+            ("\n\n\nhello", "hello"),
+            ("hello\nfoobar", "hello"),
+            ("hello\nfooooooooooooooooo", "hello"),
+            ("fooooooooooooooooo\nhello", "foooooooooooooo"),
+            ("", ""),
         ]
 
         for note, preview in notes_previews:

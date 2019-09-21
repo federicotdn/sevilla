@@ -8,7 +8,7 @@ from sevilla.exceptions import ModelException
 
 TOKEN_BYTES = 32
 NOTE_ID_BYTES = 16
-DEFAULT_MAX_PREVIEW_LENGTH = 20
+DEFAULT_MAX_PREVIEW_LENGTH = 120
 
 db = SQLAlchemy()
 migrate = Migrate(db=db)
@@ -52,15 +52,13 @@ class Note(db.Model):
 
     def preview(self, preview_length=DEFAULT_MAX_PREVIEW_LENGTH):
         lines = self.contents.splitlines()
-        first = lines[0].strip() if lines else ""
 
-        if not first:
-            return "..."
+        for line in lines:
+            line = line.strip()
+            if line:
+                return line[:preview_length]
 
-        if len(first) <= preview_length and len(lines) == 1:
-            return first
-
-        return "{}...".format(first[:preview_length])
+        return ""
 
     def modified_millis(self):
         # Ensure the datetime object is aware first
