@@ -5,6 +5,7 @@ const LOAD_COLOR = "#A0A0A0";
 const ERR_COLOR = "#CC3232";
 const SEND_INTERVAL_MS = 1 * 1000;
 const RETRY_INTERVAL_MS = 4 * 1000;
+const STORAGE_KEY = "unsent_note";
 
 var indicatorOk = true;
 var noteId = null;
@@ -19,15 +20,22 @@ window.addEventListener("DOMContentLoaded", () => {
     noteId = document.getElementById("noteId").innerText;
 
     noteElem = document.getElementById("noteText");
-    noteElem.value = "";
     noteElem.oninput = noteModified;
 
     indicatorElem = document.getElementById("indicator");
     indicatorElem.onclick = indicatorClicked;
 
-    // Note is blank - and it doesn't exist on the server yet, so
-    // technically we're synced
-    setIndicatorColor(OK_COLOR);
+    var unsentNote = localStorage.getItem(STORAGE_KEY);
+    if (unsentNote) {
+	// Restore unsent note and try to send it
+	noteElem.value = unsentNote;
+	noteModified();
+    } else {
+	noteElem.value = "";
+	// Note is blank - and it doesn't exist on the server yet, so
+	// technically we're synced
+	setIndicatorColor(OK_COLOR);
+    }
 });
 
 function setIndicatorColor(color) {
@@ -83,6 +91,7 @@ function uploadNote() {
     request.onerror = noteUploadedError;
 
     lastTimestamp = timestamp;
+    localStorage.setItem(STORAGE_KEY, noteElem.value);
     request.send(noteElem.value);
 }
 
@@ -109,6 +118,7 @@ function noteUploaded() {
     if (lastTimestamp === receivedTimestamp) {
 	setIndicatorColor(OK_COLOR);
 	lastTimestamp = null;
+	localStorage.removeItem(STORAGE_KEY);
     }
 }
 
