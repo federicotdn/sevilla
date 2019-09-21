@@ -18,11 +18,10 @@ gunicorn_server:
 	SQLALCHEMY_DATABASE_URI=$(DEV_DB_URI) \
 	gunicorn "sevilla:create_app()" -b 0.0.0.0:8080
 
-shell:
+upgrade:
 	FLASK_APP=sevilla \
-	SEVILLA_PASSWORD=$(DEV_PASSWORD) \
 	SQLALCHEMY_DATABASE_URI=$(DEV_DB_URI) \
-	flask shell
+	flask db upgrade
 
 routes:
 	FLASK_APP=sevilla \
