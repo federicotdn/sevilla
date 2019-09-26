@@ -105,3 +105,4 @@ venv.bak/
 
 # sevilla
 sevilla.db
+node_modules/
