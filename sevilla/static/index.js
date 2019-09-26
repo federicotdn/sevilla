@@ -21,7 +21,6 @@ window.addEventListener("DOMContentLoaded", () => {
     noteElem.oninput = noteModified;
 
     indicatorElem = document.getElementById("indicator");
-    indicatorElem.onclick = indicatorClicked;
 
     var unsentNote = localStorage.getItem(STORAGE_KEY);
     if (unsentNote) {
@@ -39,16 +38,6 @@ window.addEventListener("DOMContentLoaded", () => {
 function setIndicatorColor(color) {
     indicatorElem.style.backgroundColor = color;
     indicatorOk = (color === OK_COLOR);
-
-    indicatorElem.style.cursor = indicatorOk ? "pointer" : "default";
-}
-
-function indicatorClicked() {
-    if (!indicatorOk) {
-	return;
-    }
-
-    window.location.pathname = "notes";
 }
 
 function noteModified() {
@@ -61,6 +50,8 @@ function scheduleUploadNote(interval) {
 	clearTimeout(lastTimeout);
 	lastTimeout = null;
     }
+
+    localStorage.setItem(STORAGE_KEY, noteElem.value);
 
     // Schedule a new send
     lastTimeout = setTimeout(() => {
@@ -83,7 +74,6 @@ function uploadNote() {
     request.onerror = noteUploadedError;
 
     lastTimestamp = timestamp;
-    localStorage.setItem(STORAGE_KEY, noteElem.value);
     request.send(noteElem.value);
 }
 

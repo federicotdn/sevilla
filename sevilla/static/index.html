@@ -3,7 +3,7 @@
 {% block script %}<script src="/index.js"></script>{% endblock %}
 
 {% block body %}
-<div id="indicator"></div>
+<a href="{{ url_for('.list_notes') }}" id="indicator"></a>
 <textarea placeholder=" Write or paste here" autofocus id="noteText"></textarea>
 <div id="noteId" hidden>{{ note_id }}</div>
 {% endblock %}
