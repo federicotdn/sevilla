@@ -2,6 +2,9 @@
     "esversion": 6,
     "unused": true,
     "browser": true,
+    "globals": {
+        "URLSearchParams": true
+    },
     "strict": "global",
     "curly": true,
     "eqeqeq": true,

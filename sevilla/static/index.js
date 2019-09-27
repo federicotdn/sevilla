@@ -24,7 +24,7 @@ window.addEventListener("DOMContentLoaded", () => {
         elem("noteText").value = unsentNote;
         noteModified();
     } else {
-	elem("indicator").style.backgroundColor = Colors.ok;
+        elem("indicator").style.backgroundColor = Colors.ok;
     }
 });
 
@@ -49,22 +49,22 @@ function scheduleUploadNote(interval) {
 }
 
 function uploadNote() {
-    lastTimestamp = Date.now();
-    const url = "/notes/" + elem("noteId").innerText + "?" + "timestamp=" + lastTimestamp.toString();
+    var timestamp = Date.now();
+    var params = new URLSearchParams({ "timestamp": timestamp });
+    var request = new XMLHttpRequest();
+    var url = "/notes/" + elem("noteId").innerText + "?" + params.toString();
 
-    fetch(url, {
-        method: "POST",
-        credentials: "same-origin",
-        headers: { "Content-type": "text/plain" },
-        body: elem("noteText").value
-    }).then((response) => {
-        if (response.status === 200) {
-            return Promise.resolve(response);
+    request.open("POST", url);
+    request.setRequestHeader("Content-Type", "text/plain");
+
+    request.onloadend = () => {
+        if (request.status !== 200) {
+            elem("indicator").style.backgroundColor = Colors.error;
+            scheduleUploadNote(RETRY_INTERVAL_MS);
+            return;
         }
-        return Promise.reject(new Error("Unable to upload note."));	
-    }).then((response) => {
-	return response.json();
-    }).then((data) => {
+
+        var data = JSON.parse(request.response);
         var receivedTimestamp = data.timestamp;
 
         if (lastTimestamp === receivedTimestamp) {
@@ -72,8 +72,8 @@ function uploadNote() {
             lastTimestamp = null;
             localStorage.removeItem(STORAGE_KEY);
         }
-    }).catch(() => {
-        elem("indicator").style.backgroundColor = Colors.error;
-	scheduleUploadNote(RETRY_INTERVAL_MS);
-    });
+    };
+
+    lastTimestamp = timestamp;
+    request.send(elem("noteText").value);
 }
