@@ -50,26 +50,21 @@ function scheduleUploadNote(interval) {
 
 function uploadNote() {
     lastTimestamp = Date.now();
-
     const url = "/notes/" + elem("noteId").innerText + "?" + "timestamp=" + lastTimestamp.toString();
-
-    function status(response) {
-        if (response.status === 200) {
-            return Promise.resolve(response);
-        }
-        return Promise.reject(new Error("Unable to upload note."));
-    }
-
-    function json(response) {
-        return response.json();
-    }
 
     fetch(url, {
         method: "POST",
         credentials: "same-origin",
         headers: { "Content-type": "text/plain" },
         body: elem("noteText").value
-    }).then(status).then(json).then((data) => {
+    }).then((response) => {
+        if (response.status === 200) {
+            return Promise.resolve(response);
+        }
+        return Promise.reject(new Error("Unable to upload note."));	
+    }).then((response) => {
+	return response.json();
+    }).then((data) => {
         var receivedTimestamp = data.timestamp;
 
         if (lastTimestamp === receivedTimestamp) {
