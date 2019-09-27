@@ -52,7 +52,7 @@ function uploadNote() {
     var timestamp = Date.now();
     var params = new URLSearchParams({ "timestamp": timestamp });
     var request = new XMLHttpRequest();
-    var url = "/notes/" + elem("noteId").innerText + "?" + params.toString();
+    var url = elem("noteEndpoint").dataset.url + "?" + params.toString();
 
     request.open("POST", url);
     request.setRequestHeader("Content-Type", "text/plain");
