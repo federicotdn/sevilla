@@ -4,12 +4,6 @@ const SEND_INTERVAL_MS = 1 * 1000;
 const RETRY_INTERVAL_MS = 4 * 1000;
 const STORAGE_KEY = "unsent_note";
 
-var Colors = Object.freeze({
-    ok: "#28A745",
-    loading: "#A0A0A0",
-    error: "#CC3232"
-});
-
 var lastTimeout = null;
 var lastTimestamp = null;
 
@@ -23,13 +17,11 @@ window.addEventListener("DOMContentLoaded", () => {
         // Restore unsent note and try to send it
         elem("noteText").value = unsentNote;
         noteModified();
-    } else {
-        elem("indicator").style.backgroundColor = Colors.ok;
     }
 });
 
 function noteModified() {
-    elem("indicator").style.backgroundColor = Colors.loading;
+    elem("indicator").className = "indicator-loading";
     scheduleUploadNote(SEND_INTERVAL_MS);
 }
 
@@ -59,7 +51,7 @@ function uploadNote() {
 
     request.onloadend = () => {
         if (request.status !== 200) {
-            elem("indicator").style.backgroundColor = Colors.error;
+            elem("indicator").className = "indicator-error";
             scheduleUploadNote(RETRY_INTERVAL_MS);
             return;
         }
@@ -68,7 +60,7 @@ function uploadNote() {
         var receivedTimestamp = data.timestamp;
 
         if (lastTimestamp === receivedTimestamp) {
-            elem("indicator").style.backgroundColor = Colors.ok;
+            elem("indicator").className = "indicator-ok";
             lastTimestamp = null;
             localStorage.removeItem(STORAGE_KEY);
         }

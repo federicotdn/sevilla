@@ -49,6 +49,18 @@ button {
     z-index: 999;
 }
 
+#indicator.indicator-ok {
+    background-color: #28A745;
+}
+
+#indicator.indicator-loading {
+    background-color: #A0A0A0;
+}
+
+#indicator.indicator-error {
+    background-color: #CC3232;
+}
+
 /*
  *  Login
  */
