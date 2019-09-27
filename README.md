@@ -3,7 +3,8 @@
   <br/>
   <a href="https://travis-ci.org/federicotdn/sevilla"><img alt="Build status" src="https://travis-ci.org/federicotdn/sevilla.svg?branch=master"></a>
   <a href="https://heroku.com/deploy"><img alt="Heroku Deploy" src="https://img.shields.io/static/v1?label=heroku&message=deploy&color=blueviolet"></a>
-  <a href="https://github.com/federicotdn/sevilla/blob/master/LICENSE"><img alt="License" src="https://img.shields.io/github/license/federicotdn/sevilla"></a> 
+  <a href="https://github.com/federicotdn/sevilla/blob/master/LICENSE"><img alt="License" src="https://img.shields.io/github/license/federicotdn/sevilla"></a>
+  <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 </p>
 
 Sevilla is a self-hosted server application, which allows you to quickly write down notes on your mobile phone's (or desktop's) web browser to read them at another time.
