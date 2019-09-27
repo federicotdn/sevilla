@@ -27,6 +27,8 @@ routes:
 	FLASK_APP=sevilla \
 	flask routes
 
+ci-checks: lint jshint test
+
 test:
 	python3 -m unittest
 

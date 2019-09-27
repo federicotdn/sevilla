@@ -200,10 +200,6 @@ class TestFrontend(BaseTest):
 
 
 class TestFrontendNoLogin(BaseTest):
-    def test_view_login(self):
-        with self.client.get("/login") as rv:
-            self.assertEqual(rv.status_code, 200)
-
     def test_login_fail(self):
         rv = self.client.post("/login")
         self.assertEqual(rv.status_code, 401)
@@ -219,14 +215,11 @@ class TestFrontendNoLogin(BaseTest):
         rv = self.client.post("/notes/" + VALID_ID + "/hide")
         self.assertEqual(rv.status_code, 401)
 
-    def test_view_index_redirect(self):
-        rv = self.client.get("/")
-        self.assertEqual(rv.status_code, 302)
+    def test_view_index_show_login(self):
+        urls = ["/", "/notes", "/notes/" + VALID_ID]
 
-    def test_view_notes_redirect(self):
-        rv = self.client.get("/notes")
-        self.assertEqual(rv.status_code, 302)
-
-    def test_view_note_redirect(self):
-        rv = self.client.get("/notes/" + VALID_ID)
-        self.assertEqual(rv.status_code, 302)
+        for url in urls:
+            with self.subTest(url=url):
+                rv = self.client.get(url)
+                self.assertEqual(rv.status_code, 200)
+                self.assertTrue("loginForm" in rv.data.decode("utf-8"))

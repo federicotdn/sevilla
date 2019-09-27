@@ -14,13 +14,13 @@ from sevilla.exceptions import (
 frontend = Blueprint("frontend", __name__)
 
 
-def authenticated(redirect_login=True):
+def authenticated(show_login=True):
     def wrap(f):
         @wraps(f)
         def wrapped_f(*args, **kwargs):
             if not AuthService.is_valid_token(session.get("id")):
-                if redirect_login:
-                    return redirect(url_for(".login"))
+                if show_login:
+                    return render_template("login.html", next=request.path)
                 else:
                     abort(401)
 
@@ -84,7 +84,7 @@ def list_notes():
 
 
 @frontend.route("/notes/<note_id>", methods=["POST"])
-@authenticated(redirect_login=False)
+@authenticated(show_login=False)
 def upsert_note(note_id):
     if not NotesService.id_is_valid(note_id):
         abort(400)
@@ -120,7 +120,7 @@ def get_note(note_id):
 
 
 @frontend.route("/notes/<note_id>/hide", methods=["POST"])
-@authenticated(redirect_login=False)
+@authenticated(show_login=False)
 def hide_note(note_id):
     NotesService.hide_note(note_id)
     page = form_int("page", 1)
@@ -135,14 +135,6 @@ def hide_note(note_id):
     )
 
 
-@frontend.route("/login")
-def login_page():
-    if AuthService.is_valid_token(session.get("id")):
-        return redirect(url_for(".index"))
-
-    return render_template("login.html")
-
-
 @frontend.route("/login", methods=["POST"])
 def login():
     if not AuthService.is_valid_password(request.form.get("password")):
@@ -152,15 +144,15 @@ def login():
     session.permanent = True
 
     current_app.logger.info("New login with ID: {}.".format(session["id"]))
-    return redirect(url_for(".index"))
+    return redirect(request.form.get("next", url_for(".index")))
 
 
 @frontend.route("/logout", methods=["POST"])
-@authenticated(redirect_login=False)
+@authenticated(show_login=False)
 def logout():
     AuthService.delete_token(session["id"])
     session.clear()
-    return redirect(url_for(".login"))
+    return redirect(url_for(".index"))
 
 
 @frontend.errorhandler(PasswordNotSet)
