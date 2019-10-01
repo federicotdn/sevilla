@@ -3,7 +3,7 @@
 {% block script %}<script src="/index.js"></script>{% endblock %}
 
 {% block body %}
-<a href="{{ url_for('.list_notes') }}" id="indicator" class="indicator-ok"></a>
+<a href="{{ url_for('.list_notes') }}" id="indicator" class="indicatorOk"></a>
 <textarea placeholder=" Write or paste here" autofocus id="noteText"></textarea>
 <div id="noteEndpoint" data-url="{{ url_for('.upsert_note', note_id=note_id) }}" hidden></div>
 {% endblock %}

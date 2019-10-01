@@ -49,15 +49,15 @@ button {
     z-index: 999;
 }
 
-#indicator.indicator-ok {
+#indicator.indicatorOk {
     background-color: #28A745;
 }
 
-#indicator.indicator-loading {
+#indicator.indicatorLoading {
     background-color: #A0A0A0;
 }
 
-#indicator.indicator-error {
+#indicator.indicatorError {
     background-color: #CC3232;
 }
 

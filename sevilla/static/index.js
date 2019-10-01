@@ -21,7 +21,7 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 function noteModified() {
-    elem("indicator").className = "indicator-loading";
+    elem("indicator").className = "indicatorLoading";
     scheduleUploadNote(SEND_INTERVAL_MS);
 }
 
@@ -51,7 +51,7 @@ function uploadNote() {
 
     request.onloadend = () => {
         if (request.status !== 200) {
-            elem("indicator").className = "indicator-error";
+            elem("indicator").className = "indicatorError";
             scheduleUploadNote(RETRY_INTERVAL_MS);
             return;
         }
@@ -60,7 +60,7 @@ function uploadNote() {
         var receivedTimestamp = data.timestamp;
 
         if (lastTimestamp === receivedTimestamp) {
-            elem("indicator").className = "indicator-ok";
+            elem("indicator").className = "indicatorOk";
             lastTimestamp = null;
             localStorage.removeItem(STORAGE_KEY);
         }
