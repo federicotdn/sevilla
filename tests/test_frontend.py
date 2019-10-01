@@ -198,6 +198,15 @@ class TestFrontend(BaseTest):
                 note = NotesService.upsert_note(VALID_ID, note, utils.now())
                 self.assertEqual(is_note_link(note), is_link)
 
+    def test_note_mark_as_read(self):
+        note = NotesService.upsert_note(VALID_ID, "hello", utils.now())
+        self.assertFalse(note.read)
+
+        with self.client.get("/notes/" + VALID_ID) as rv:
+            self.assertEqual(rv.status_code, 200)
+
+        self.assertTrue(note.read)
+
 
 class TestFrontendNoLogin(BaseTest):
     def test_login_fail(self):

@@ -106,3 +106,10 @@ class TestNotesService(BaseTest):
                     NotesService.generate_note_id(), note, utils.now()
                 )
                 self.assertEqual(preview, note.preview(15))
+
+    def test_read_note(self):
+        note = NotesService.upsert_note(VALID_ID, "Test", utils.now())
+        self.assertFalse(note.read)
+
+        NotesService.mark_as_read(note)
+        self.assertTrue(note.read)

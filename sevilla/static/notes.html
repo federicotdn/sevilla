@@ -21,10 +21,10 @@
       <tr>
 	<td class="noteTimestamp">{{ note.modified_millis() }}</td>
 	<td class="noteLink">
+	  {% set note_preview = note.preview() %}
 	  <a href="{{ url_for('.get_note', note_id=note.id) }}">
-	    {% set note_preview = note.preview() %}
 	    {% if note_preview %}
-	    {{ note.preview() }}
+	    {{ "" if note.read else "*" }}{{ note.preview() }}
 	    {% else %}
 	    <i>(empty)</i>
 	    {% endif %}

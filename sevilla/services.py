@@ -37,6 +37,11 @@ class NotesService:
         return note
 
     @staticmethod
+    def mark_as_read(note):
+        note.mark_as_read()
+        db.session.commit()
+
+    @staticmethod
     def generate_note_id():
         return Note.generate_id()
 

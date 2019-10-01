@@ -41,6 +41,7 @@ class Note(db.Model):
     contents = db.Column(db.Text, nullable=False)
     modified = db.Column(db.DateTime, nullable=False)
     hidden = db.Column(db.Boolean, nullable=False, default=False)
+    read = db.Column(db.Boolean, default=False)
 
     def update_contents(self, contents, timestamp):
         if self.modified < timestamp:
@@ -49,6 +50,9 @@ class Note(db.Model):
 
     def hide(self):
         self.hidden = True
+
+    def mark_as_read(self):
+        self.read = True
 
     def preview(self, preview_length=DEFAULT_MAX_PREVIEW_LENGTH):
         lines = self.contents.splitlines()

@@ -113,6 +113,8 @@ def upsert_note(note_id):
 @authenticated()
 def get_note(note_id):
     note = NotesService.get_note(note_id)
+    NotesService.mark_as_read(note)
+
     is_link = is_note_link(note)
     template = "view-link.html" if is_link else "view.html"
 
