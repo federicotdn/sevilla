@@ -22,9 +22,12 @@
 	<td class="noteTimestamp">{{ note.modified_millis() }}</td>
 	<td class="noteLink">
 	  {% set note_preview = note.preview() %}
-	  <a href="{{ url_for('.get_note', note_id=note.id) }}">
-	    {% if note_preview %}
-	    {{ "" if note.read else "*" }}{{ note.preview() }}
+	  <!-- HTML comments used here so that no additional spaces are inserted
+	       between the asterisk and the note preview.-->
+	  {{ "" if note.read or not note_preview else "*" }}<!--
+       --><a href="{{ url_for('.get_note', note_id=note.id) }}"><!--
+         -->{% if note_preview %}<!--
+         -->{{ note_preview }}
 	    {% else %}
 	    <i>(empty)</i>
 	    {% endif %}
