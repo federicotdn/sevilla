@@ -28,10 +28,10 @@ button {
 
 #noteText {
     width: 99vw;
-    height: 95vh;
+    height: 96vh;
     position: fixed;
-    white-space: pre;
-    top: 5vh;
+    white-space: pre-wrap;
+    top: 4vh;
     left: 1vw;
     border: 0em;
     padding: 0em;
@@ -198,7 +198,9 @@ table {
  */
 
 #noteContents {
-    margin: 0.4em;
+    margin: 1vw;
+    width: 98vw;
+    white-space: pre-wrap;
     font-size: 1em;
     font-family: sans-serif;
 }
