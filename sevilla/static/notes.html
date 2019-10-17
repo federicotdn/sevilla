@@ -48,12 +48,17 @@
   <h3 id="noNotesHeader">No notes to show.</h3>
   {% else %}
   <div id="paginationButtons">
-    {% if pagination.has_prev %}
-    <a href="{{ url_previous  }}"><button id="paginationButtonPrevious"><b>←</b></button></a>
-    {% endif %}
-    {% if pagination.has_next %}
-    <a href="{{ url_next }}"><button id="paginationButtonNext"><b>→</b></button></a>
-    {% endif %}
+    <a href="{{ url_previous  }}" {% if not pagination.has_prev %}class="hidden"{% endif %}>
+      <button id="paginationButtonPrevious">
+	<b>←</b>
+      </button>
+    </a>
+    <a href="{{ url_for('.list_notes') }}"><button id="paginationButtonReset">0</button></a>
+    <a href="{{ url_next }}" {% if not pagination.has_next %}class="hidden"{% endif %}>
+      <button id="paginationButtonNext">
+	<b>→</b>
+      </button>
+    </a>
   </div>
   <div id="pageIndicator">{{ pagination.page }}/{{ pagination.pages }} ({{ pagination.total }})</div>
   {% endif %}

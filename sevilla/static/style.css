@@ -157,9 +157,15 @@ table {
 
 #paginationButtons {
     margin: auto;
-    width: 30%;
+    width: 50%;
     margin-top: 1em;
     margin-bottom: 3em;
+    display: flex;
+    justify-content: space-around;
+}
+
+#paginationButtons button {
+    height: 1.8em;
 }
 
 #pageIndicator {
@@ -179,12 +185,8 @@ table {
     font-family: sans-serif;
 }
 
-#paginationButtonNext {
-    float: right;
-}
-
-#paginationButtonPrevious {
-    float: left;
+.hidden {
+    visibility: hidden;
 }
 
 .noteLink {
