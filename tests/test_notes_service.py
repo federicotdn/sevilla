@@ -113,3 +113,13 @@ class TestNotesService(BaseTest):
 
         NotesService.mark_as_read(note)
         self.assertTrue(note.read)
+
+    def test_upate_read_note(self):
+        note = NotesService.upsert_note(VALID_ID, "Test", utils.now())
+        self.assertFalse(note.read)
+
+        NotesService.mark_as_read(note)
+        self.assertTrue(note.read)
+
+        note = NotesService.upsert_note(VALID_ID, "foobar", utils.now(1000))
+        self.assertFalse(note.read)

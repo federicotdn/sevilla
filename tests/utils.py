@@ -1,8 +1,8 @@
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 
-def now():
-    return datetime.utcnow()
+def now(offset_seconds=0):
+    return datetime.utcnow() + timedelta(seconds=offset_seconds)
 
 
 def timestamp_seconds(dt):

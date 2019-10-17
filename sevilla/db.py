@@ -47,6 +47,7 @@ class Note(db.Model):
         if self.modified < timestamp:
             self.contents = contents
             self.modified = timestamp
+            self.read = False
 
     def hide(self):
         self.hidden = True
