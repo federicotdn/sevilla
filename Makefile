@@ -1,6 +1,7 @@
 DEV_PASSWORD=sevilla
 DEV_SECRET_KEY=dev-secret-key
 DEV_DB_URI=sqlite:///$(shell realpath sevilla.db)
+DOCKER_COMPOSE_CMD=sudo docker-compose -f docker/docker-compose.yml
 
 dev_server:
 	FLASK_APP=sevilla \
@@ -26,6 +27,18 @@ upgrade:
 routes:
 	FLASK_APP=sevilla \
 	flask routes
+
+docker-compose-build:
+	$(DOCKER_COMPOSE_CMD) build
+
+docker-compose-up:
+	$(DOCKER_COMPOSE_CMD) up -d
+
+docker-compose-stop:
+	$(DOCKER_COMPOSE_CMD) stop
+
+docker-compose-down:
+	$(DOCKER_COMPOSE_CMD) down
 
 ci-checks: lint jshint test
 

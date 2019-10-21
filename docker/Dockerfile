@@ -1,10 +1,9 @@
 FROM python:3.7-slim
 
-WORKDIR /app
-
-COPY requirements.txt /app
-COPY sevilla /app/sevilla
-COPY migrations /app/migrations
+COPY requirements.txt .
+COPY LICENSE .
+COPY sevilla sevilla
+COPY migrations migrations
 RUN pip install -r requirements.txt
 
 EXPOSE 8080
