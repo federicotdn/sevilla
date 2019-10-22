@@ -38,7 +38,10 @@ docker-compose-stop:
 	$(DOCKER_COMPOSE_CMD) stop
 
 docker-compose-down:
-	$(DOCKER_COMPOSE_CMD) down
+	$(DOCKER_COMPOSE_CMD) down --volumes
+
+docker-compose-test:
+	python3 -m unittest -v tests/docker/test_docker.py
 
 ci-checks: lint jshint test
 
