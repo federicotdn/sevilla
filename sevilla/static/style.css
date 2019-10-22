@@ -92,6 +92,14 @@ button {
     display: block;
 }
 
+#loginError {
+    text-align: center;
+    font-size: 1em;
+    font-family: sans-serif;
+    margin-top: 0.8em;
+    color: #CC3232;
+}
+
 /*
  *  Notes list
  */

@@ -211,10 +211,10 @@ class TestFrontend(BaseTest):
 class TestFrontendNoLogin(BaseTest):
     def test_login_fail(self):
         rv = self.client.post("/login")
-        self.assertEqual(rv.status_code, 401)
+        self.assertEqual(rv.status_code, 302)
 
         rv = self.client.post("/login", data={"password": "foobar"})
-        self.assertEqual(rv.status_code, 401)
+        self.assertEqual(rv.status_code, 302)
 
     def test_upsert_note_unauthorized(self):
         rv = self.client.post("/notes/" + VALID_ID)

@@ -1,7 +1,7 @@
 import urllib.parse
 from functools import wraps
 from datetime import datetime, timedelta
-from flask import Blueprint, current_app, request, session, redirect, url_for
+from flask import Blueprint, current_app, request, session, redirect, url_for, flash
 from flask import abort, render_template
 from sevilla.services import AuthService, NotesService
 from sevilla.exceptions import (
@@ -140,7 +140,8 @@ def hide_note(note_id):
 @frontend.route("/login", methods=["POST"])
 def login():
     if not AuthService.is_valid_password(request.form.get("password")):
-        abort(401)
+        flash("Invalid password.", "error")
+        return redirect(url_for(".index"))
 
     session["id"] = AuthService.new_token().id
     session.permanent = True

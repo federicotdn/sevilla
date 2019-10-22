@@ -12,5 +12,9 @@
   <div>
     <button id="loginButton" class="textButton">Login</button>
   </div>
+  {% set errors = get_flashed_messages(category_filter=["error"]) %}
+  {% if errors %}
+  <div id="loginError">{{ errors[0] }}</div>
+  {% endif %}
 </form>
 {% endblock %}
