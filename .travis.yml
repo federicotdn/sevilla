@@ -23,6 +23,7 @@ jobs:
         echo "SEVILLA_PASSWORD=sevilla" >> .env
         echo "SEVILLA_SECRET_KEY=sevilla" >> .env
         echo "SEVILLA_PG_PASSWORD=sevilla" >> .env
+        make docker-compose-build
         make docker-compose-up
         wget localhost:8080/
         make docker-compose-down
