@@ -1,4 +1,6 @@
 dist: bionic
+services:
+  - docker
 language: python
 python:
   - "3.7"
@@ -8,6 +10,19 @@ before_install:
   - make setup-jshint
 install:
   - pip install -r requirements.txt -r requirements-dev.txt
-script:
-  - make upgrade
-  - make ci-checks
+jobs:
+  include:
+    - stage: "Tests"
+      name: "Unit Tests and Formatting"
+      script: make ci-checks
+    - name: "Run Migrations on SQLite"
+      script: make upgrade
+    - stage: "Docker"
+      name: "Run docker-compose Up/Down"
+      script: |
+        echo "SEVILLA_PASSWORD=sevilla" >> .env
+        echo "SEVILLA_SECRET_KEY=sevilla" >> .env
+        echo "SEVILLA_PG_PASSWORD=sevilla" >> .env
+        make docker-compose-up
+        wget localhost:8080/
+        make docker-compose-down
