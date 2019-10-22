@@ -43,8 +43,6 @@ docker-compose-down:
 docker-compose-test:
 	python3 -m unittest -v tests/docker/test_docker.py
 
-ci-checks: lint jshint test
-
 test:
 	python3 -m unittest
 

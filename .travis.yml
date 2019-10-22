@@ -4,21 +4,26 @@ services:
 language: python
 python:
   - "3.7"
-before_install:
-  - sudo apt-get update
-  - sudo apt-get install -y npm
-  - make setup-jshint
 install:
   - pip install -r requirements.txt -r requirements-dev.txt
 jobs:
   include:
+    - stage: "Formatting"
+      name: "Black and flake8"
+      script: make lint
+    - name: "JSHint"
+      script: |
+        sudo apt-get update
+        sudo apt-get install -y npm
+        make setup-jshint
+        make jshint
     - stage: "Tests"
-      name: "Unit Tests and Formatting"
+      name: "Unit Tests"
       script: make ci-checks
     - name: "Run Migrations on SQLite"
       script: make upgrade
     - stage: "Docker"
-      name: "Run docker-compose Up/Down"
+      name: "Run tests on Docker container"
       script: |
         echo "SEVILLA_PASSWORD=sevilla" >> .env
         echo "SEVILLA_SECRET_KEY=sevilla" >> .env
