@@ -19,7 +19,7 @@ jobs:
         make jshint
     - stage: "Tests"
       name: "Unit Tests"
-      script: make ci-checks
+      script: make test
     - name: "Run Migrations on SQLite"
       script: make upgrade
     - stage: "Docker"
