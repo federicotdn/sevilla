@@ -1,4 +1,5 @@
 import os
+import logging
 from flask import Flask
 
 DEFAULT_CONFIG = {
@@ -58,7 +59,13 @@ def create_app(test_config=None):
             upgrade_db()
 
         deleted = AuthService.delete_expired_tokens()
-        if deleted:
-            app.logger.info("Deleted {} expired user token(s).".format(deleted))
+
+    if os.environ.get("SERVER_SOFTWARE", "").startswith("gunicorn"):
+        gunicorn_logger = logging.getLogger("gunicorn.error")
+        app.logger.handlers = gunicorn_logger.handlers
+        app.logger.setLevel(gunicorn_logger.level)
+
+    if deleted:
+        app.logger.info("Deleted {} expired user token(s).".format(deleted))
 
     return app
