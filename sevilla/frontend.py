@@ -18,7 +18,11 @@ def authenticated(show_login=True):
     def wrap(f):
         @wraps(f)
         def wrapped_f(*args, **kwargs):
+            current_app.logger.info("Session ID: {}".format(session.get("id")))
+
             if not AuthService.is_valid_token(session.get("id")):
+                current_app.logger.info("Session not valid.")
+
                 if show_login:
                     return render_template("login.html", next=request.path)
                 else:
