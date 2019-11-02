@@ -54,7 +54,7 @@
       </button>
     </a>
     <a href="{{ url_for('.list_notes') }}" {% if pagination.page <= 1 %}class="hidden"{% endif %}>
-      <button id="paginationButtonReset">0</button>
+      <button id="paginationButtonReset">First</button>
     </a>
     <a href="{{ url_next }}" {% if not pagination.has_next %}class="hidden"{% endif %}>
       <button id="paginationButtonNext">
