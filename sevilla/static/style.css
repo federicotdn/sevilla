@@ -27,6 +27,7 @@ button {
  */
 
 #noteText {
+    outline: none;
     width: 99vw;
     height: 96vh;
     position: fixed;
