@@ -4,16 +4,16 @@
 
 {% block body %}
 <body>
-  <a href="{{ url_for('.index') }}"><button class="textButton" id="backButton">Write</button></a>
+  <a href="{{ url_for('.index') }}"><button class="textButton" id="backButton">{{ s.write }}</button></a>
   <form id="logoutForm" action="{{ url_for('.logout') }}" method="post">
-    <button class="textButton" id="logoutButton">Log out</button>
+    <button class="textButton" id="logoutButton">{{ s.logout }}</button>
   </form>
   <table>
     <thead id="notesTableHeader">
       <tr>
-	<td>Created</td>
-	<td>Note</td>
-	<td>Hide</td>
+	<td>{{ s.created }}</td>
+	<td>{{ s.note }}</td>
+	<td>{{ s.hide }}</td>
       </tr>
     </thead>
     <tbody id="notesTable">
@@ -29,7 +29,7 @@
          -->{% if note_preview %}<!--
          -->{{ note_preview }}
 	    {% else %}
-	    <i>(empty)</i>
+	    <i>{{ "(" + s.empty + ")" }}</i>
 	    {% endif %}
 	  </a>
 	</td>
@@ -45,7 +45,7 @@
     </tbody>
   </table>
   {% if not pagination.items %}
-  <h3 id="noNotesHeader">No notes to show.</h3>
+  <h3 id="noNotesHeader">{{ s.no_notes }}</h3>
   {% else %}
   <div id="paginationButtons">
     <a href="{{ url_previous  }}" {% if not pagination.has_prev %}class="hidden"{% endif %}>
@@ -54,7 +54,7 @@
       </button>
     </a>
     <a href="{{ url_for('.list_notes') }}" {% if pagination.page <= 1 %}class="hidden"{% endif %}>
-      <button id="paginationButtonReset">First</button>
+      <button id="paginationButtonReset">{{ s.first }}</button>
     </a>
     <a href="{{ url_next }}" {% if not pagination.has_next %}class="hidden"{% endif %}>
       <button id="paginationButtonNext">

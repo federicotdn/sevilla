@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from flask import Blueprint, current_app, request, session, redirect, url_for, flash
 from flask import abort, render_template
 from sevilla.services import AuthService, NotesService
+from sevilla import strings
 from sevilla.exceptions import (
     PasswordNotSet,
     ModelException,
@@ -24,7 +25,7 @@ def authenticated(show_login=True):
                 current_app.logger.info("Session not valid.")
 
                 if show_login:
-                    return render_template("login.html", next=request.path)
+                    return render_template("login.html", next=request.path, s=strings)
                 else:
                     abort(401)
 
@@ -65,7 +66,9 @@ def is_note_link(note):
 @frontend.route("/")
 @authenticated()
 def index():
-    return render_template("index.html", note_id=NotesService.generate_note_id())
+    return render_template(
+        "index.html", note_id=NotesService.generate_note_id(), s=strings
+    )
 
 
 @frontend.route("/notes")
@@ -84,6 +87,7 @@ def list_notes():
         pagination=pagination,
         url_previous=url_previous,
         url_next=url_next,
+        s=strings,
     )
 
 
