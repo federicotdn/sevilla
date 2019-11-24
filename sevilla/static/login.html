@@ -6,11 +6,11 @@
     <img src="logo.png" alt="Sevilla logo" height="192" width="192" id="loginLogo">
   </a>
   <div>
-    <input name="password" id="passwordField" value="" type="password" placeholder="{{ s.password }}">
+    <input name="password" id="passwordField" value="" type="password" placeholder="{{ t.password }}">
     <input name="next" value="{{ next }}" type="hidden">
   </div>
   <div>
-    <button id="loginButton" class="textButton">{{ s.login }}</button>
+    <button id="loginButton" class="textButton">{{ t.login }}</button>
   </div>
   {% set errors = get_flashed_messages(category_filter=["error"]) %}
   {% if errors %}

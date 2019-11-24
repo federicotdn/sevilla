@@ -10,6 +10,7 @@ DEFAULT_CONFIG = {
     "PERMANENT_SESSION_LIFETIME": 2678400,  # 31 days in seconds
     "MAX_NOTE_LENGTH": 128 * 1024,
     "SEVILLA_PASSWORD": None,
+    "SEVILLA_LOCALE": "en",
 }
 
 
@@ -46,11 +47,13 @@ def create_app(test_config=None):
     from sevilla.frontend import frontend
     from sevilla.db import db, migrate, upgrade_db
     from sevilla.services import AuthService
+    from sevilla.strings import t
 
     app.register_blueprint(frontend)
 
     db.init_app(app)
     migrate.init_app(app)
+    t.init_app(app)
 
     with app.app_context():
         if test_config:

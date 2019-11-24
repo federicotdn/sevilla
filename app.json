@@ -10,6 +10,10 @@
 	    "description": "Login password for web interface.",
 	    "generator": "secret"
 	},
+	"SEVILLA_LOCALE": {
+	    "description": "Language for UI. Possible values are: en, es.",
+	    "value": "en"
+	},
 	"SECRET_KEY": {
 	    "description": "Secrey key for Flask session signing.",
 	    "generator": "secret"

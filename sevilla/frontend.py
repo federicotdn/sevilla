@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from flask import Blueprint, current_app, request, session, redirect, url_for, flash
 from flask import abort, render_template
 from sevilla.services import AuthService, NotesService
-from sevilla import strings
+from sevilla.strings import t
 from sevilla.exceptions import (
     PasswordNotSet,
     ModelException,
@@ -19,13 +19,13 @@ def authenticated(show_login=True):
     def wrap(f):
         @wraps(f)
         def wrapped_f(*args, **kwargs):
-            current_app.logger.info("Session ID: {}".format(session.get("id")))
+            current_app.logger.info("Session ID: {}.".format(session.get("id")))
 
             if not AuthService.is_valid_token(session.get("id")):
                 current_app.logger.info("Session not valid.")
 
                 if show_login:
-                    return render_template("login.html", next=request.path, s=strings)
+                    return render_template("login.html", next=request.path, t=t)
                 else:
                     abort(401)
 
@@ -66,9 +66,7 @@ def is_note_link(note):
 @frontend.route("/")
 @authenticated()
 def index():
-    return render_template(
-        "index.html", note_id=NotesService.generate_note_id(), s=strings
-    )
+    return render_template("index.html", note_id=NotesService.generate_note_id(), t=t)
 
 
 @frontend.route("/notes")
@@ -87,7 +85,7 @@ def list_notes():
         pagination=pagination,
         url_previous=url_previous,
         url_next=url_next,
-        s=strings,
+        t=t,
     )
 
 
@@ -148,7 +146,7 @@ def hide_note(note_id):
 @frontend.route("/login", methods=["POST"])
 def login():
     if not AuthService.is_valid_password(request.form.get("password")):
-        flash("Invalid password.", "error")
+        flash(t.invalid_password, "error")
         return redirect(url_for(".index"))
 
     session["id"] = AuthService.new_token().id
@@ -169,14 +167,14 @@ def logout():
 @frontend.errorhandler(PasswordNotSet)
 def handle_password_not_set(_):
     current_app.logger.error("App password ('SEVILLA_PASSWORD') not set.")
-    return "Internal server error", 500
+    return t.internal_server_error, 500
 
 
 @frontend.errorhandler(NoteNotFound)
 def handle_note_not_found(_):
-    return "Note not found", 404
+    return t.note_not_found, 404
 
 
 @frontend.errorhandler(TokenNotFound)
 def handle_token_not_found(_):
-    return "Token not found", 404
+    return t.token_not_found, 404
