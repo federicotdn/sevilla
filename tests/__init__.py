@@ -9,6 +9,7 @@ class BaseTest(unittest.TestCase):
                 "SQLALCHEMY_DATABASE_URI": "sqlite://",
                 "SECRET_KEY": "testing-key",
                 "SEVILLA_PASSWORD": "sevilla",
+                "SEVILLA_LOCALE": "en",
             }
         )
 

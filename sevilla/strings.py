@@ -5,9 +5,12 @@ STRINGS_DATA_PATH = "sevilla/strings.json"
 
 
 class Translator:
-    def __init__(self, app=None):
-        with open(STRINGS_DATA_PATH) as f:
-            self._data = json.load(f)
+    def __init__(self, app=None, data=None):
+        if data:
+            self._data = data
+        else:
+            with open(STRINGS_DATA_PATH) as f:
+                self._data = json.load(f)
 
         self._locale = None
         self._dict = {}
