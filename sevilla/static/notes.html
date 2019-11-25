@@ -53,7 +53,7 @@
 	<b>←</b>
       </button>
     </a>
-    <a href="{{ url_for('.list_notes') }}" {% if pagination.page <= 1 %}class="hidden"{% endif %}>
+    <a href="{{ url_for('.get_notes') }}" {% if pagination.page <= 1 %}class="hidden"{% endif %}>
       <button id="paginationButtonReset">{{ t.first }}</button>
     </a>
     <a href="{{ url_next }}" {% if not pagination.has_next %}class="hidden"{% endif %}>

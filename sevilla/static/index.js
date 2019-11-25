@@ -46,7 +46,7 @@ function uploadNote() {
     var request = new XMLHttpRequest();
     var url = elem("noteEndpoint").dataset.url + "?" + params.toString();
 
-    request.open("POST", url);
+    request.open("PUT", url);
     request.setRequestHeader("Content-Type", "text/plain");
 
     request.onloadend = () => {

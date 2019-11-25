@@ -8,21 +8,21 @@ class TestFrontend(BaseTest):
     def setUp(self):
         super().setUp()
         self.client.post(
-            "/login", data={"password": self.app.config["SEVILLA_PASSWORD"]}
+            "/session/login", data={"password": self.app.config["SEVILLA_PASSWORD"]}
         )
 
     def test_logout(self):
         rv = self.client.get("/")
         self.assertEqual(rv.status_code, 200)
 
-        rv = self.client.post("/logout")
+        rv = self.client.post("/session/logout")
         self.assertEqual(rv.status_code, 302)
 
-        rv = self.client.post("/notes/" + VALID_ID)
+        rv = self.client.put("/notes/" + VALID_ID)
         self.assertEqual(rv.status_code, 401)
 
     def test_create_note(self):
-        rv = self.client.post(
+        rv = self.client.put(
             "/notes/" + VALID_ID + "?timestamp=1",
             data="Hello, world!",
             headers={"Content-type": "text/plain"},
@@ -33,7 +33,7 @@ class TestFrontend(BaseTest):
         self.assertEqual(note.contents, "Hello, world!")
 
     def test_create_empty_note(self):
-        rv = self.client.post(
+        rv = self.client.put(
             "/notes/" + VALID_ID + "?timestamp=1",
             data="",
             headers={"Content-type": "text/plain"},
@@ -44,14 +44,14 @@ class TestFrontend(BaseTest):
         self.assertEqual(note.contents, "")
 
     def test_update_note(self):
-        rv = self.client.post(
+        rv = self.client.put(
             "/notes/" + VALID_ID + "?timestamp=1000",
             data="foo",
             headers={"Content-type": "text/plain"},
         )
         self.assertEqual(rv.status_code, 200)
 
-        rv = self.client.post(
+        rv = self.client.put(
             "/notes/" + VALID_ID + "?timestamp=2000",
             data="bar",
             headers={"Content-type": "text/plain"},
@@ -63,7 +63,7 @@ class TestFrontend(BaseTest):
         self.assertEqual(utils.timestamp_seconds(note.modified), 2)
 
     def test_try_update_note(self):
-        rv = self.client.post(
+        rv = self.client.put(
             "/notes/" + VALID_ID + "?timestamp=2000",
             data="foo",
             headers={"Content-type": "text/plain"},
@@ -71,7 +71,7 @@ class TestFrontend(BaseTest):
         self.assertEqual(rv.status_code, 200)
 
         # Try sending again with older timestamp
-        rv = self.client.post(
+        rv = self.client.put(
             "/notes/" + VALID_ID + "?timestamp=1000",
             data="bar",
             headers={"Content-type": "text/plain"},
@@ -83,7 +83,7 @@ class TestFrontend(BaseTest):
         self.assertEqual(utils.timestamp_seconds(note.modified), 2)
 
     def test_try_update_note_invalid_timestamp(self):
-        rv = self.client.post(
+        rv = self.client.put(
             "/notes/" + VALID_ID + "?timestamp=2000",
             data="foo",
             headers={"Content-type": "text/plain"},
@@ -91,7 +91,7 @@ class TestFrontend(BaseTest):
         self.assertEqual(rv.status_code, 200)
 
         # Try sending again with invalid timestamp
-        rv = self.client.post(
+        rv = self.client.put(
             "/notes/" + VALID_ID + "?timestamp=foobar",
             data="bar",
             headers={"Content-type": "text/plain"},
@@ -105,14 +105,14 @@ class TestFrontend(BaseTest):
     def test_try_large_upload(self):
         self.app.config["MAX_NOTE_LENGTH"] = 5
 
-        rv = self.client.post(
+        rv = self.client.put(
             "/notes/" + VALID_ID + "?timestamp=1",
             data="abcd",
             headers={"Content-type": "text/plain"},
         )
         self.assertEqual(rv.status_code, 200)
 
-        rv = self.client.post(
+        rv = self.client.put(
             "/notes/" + VALID_ID + "?timestamp=2",
             data="abcdefgh",
             headers={"Content-type": "text/plain"},
@@ -210,14 +210,14 @@ class TestFrontend(BaseTest):
 
 class TestFrontendNoLogin(BaseTest):
     def test_login_fail(self):
-        rv = self.client.post("/login")
+        rv = self.client.post("/session/login")
         self.assertEqual(rv.status_code, 302)
 
-        rv = self.client.post("/login", data={"password": "foobar"})
+        rv = self.client.post("/session/login", data={"password": "foobar"})
         self.assertEqual(rv.status_code, 302)
 
     def test_upsert_note_unauthorized(self):
-        rv = self.client.post("/notes/" + VALID_ID)
+        rv = self.client.put("/notes/" + VALID_ID)
         self.assertEqual(rv.status_code, 401)
 
     def test_hide_note_unauthorized(self):

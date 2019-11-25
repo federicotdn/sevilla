@@ -1,8 +1,10 @@
 import urllib.parse
+import io
+import zipfile
 from functools import wraps
 from datetime import datetime, timedelta
 from flask import Blueprint, current_app, request, session, redirect, url_for, flash
-from flask import abort, render_template
+from flask import abort, render_template, send_file
 from sevilla.services import AuthService, NotesService
 from sevilla.strings import t
 from sevilla.exceptions import (
@@ -50,6 +52,10 @@ def args_int(key, default=0):
         return default
 
 
+def args_bool(key):
+    return key in request.args
+
+
 def is_note_link(note):
     lines = note.contents.splitlines()
     if len(lines) != 1:
@@ -69,16 +75,30 @@ def index():
     return render_template("index.html", note_id=NotesService.generate_note_id(), t=t)
 
 
+def dump():
+    f = io.BytesIO()
+    with zipfile.ZipFile(f, "w") as zf:
+        for note in NotesService.notes():
+            data = zipfile.ZipInfo("{}.txt".format(note.id), note.modified.timetuple())
+            zf.writestr(data, note.contents)
+
+    f.seek(0)
+    return send_file(f, attachment_filename="notes.zip", as_attachment=True)
+
+
 @frontend.route("/notes")
 @authenticated()
-def list_notes():
+def get_notes():
+    if args_bool("dump"):
+        return dump()
+
     page = args_int("page", 1)
     pagination = NotesService.paginate_notes(page)
 
-    url_previous = url_for(".list_notes")
+    url_previous = url_for(".get_notes")
     if pagination.prev_num and pagination.prev_num > 1:
         url_previous += "?page={}".format(pagination.prev_num)
-    url_next = "{}?page={}".format(url_for(".list_notes"), pagination.next_num)
+    url_next = "{}?page={}".format(url_for(".get_notes"), pagination.next_num)
 
     return render_template(
         "notes.html",
@@ -89,7 +109,7 @@ def list_notes():
     )
 
 
-@frontend.route("/notes/<note_id>", methods=["POST"])
+@frontend.route("/notes/<note_id>", methods=["PUT"])
 @authenticated(show_login=False)
 def upsert_note(note_id):
     if not NotesService.id_is_valid(note_id):
@@ -139,11 +159,11 @@ def hide_note(note_id):
         page -= 1
 
     return redirect(
-        url_for(".list_notes") + ("?page={}".format(page) if page > 1 else "")
+        url_for(".get_notes") + ("?page={}".format(page) if page > 1 else "")
     )
 
 
-@frontend.route("/login", methods=["POST"])
+@frontend.route("/session/login", methods=["POST"])
 def login():
     if not AuthService.is_valid_password(request.form.get("password")):
         flash(t.invalid_password, "error")
@@ -156,7 +176,7 @@ def login():
     return redirect(request.form.get("next", url_for(".index")))
 
 
-@frontend.route("/logout", methods=["POST"])
+@frontend.route("/session/logout", methods=["POST"])
 @authenticated(show_login=False)
 def logout():
     AuthService.delete_token(session["id"])

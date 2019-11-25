@@ -25,6 +25,7 @@ upgrade:
 	flask db upgrade
 
 routes:
+	SQLALCHEMY_DATABASE_URI=$(DEV_DB_URI) \
 	FLASK_APP=sevilla \
 	flask routes
 

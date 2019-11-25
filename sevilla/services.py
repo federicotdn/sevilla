@@ -51,6 +51,14 @@ class NotesService:
         db.session.commit()
 
     @staticmethod
+    def notes(yield_per=100):
+        return (
+            Note.query.filter(Note.hidden == db.false())
+            .order_by(Note.modified.desc())
+            .yield_per(yield_per)
+        )
+
+    @staticmethod
     def paginate_notes(page, page_size=DEFAULT_PAGE_SIZE):
         return (
             Note.query.filter(Note.hidden == db.false())
