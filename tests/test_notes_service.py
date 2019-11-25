@@ -123,3 +123,21 @@ class TestNotesService(BaseTest):
 
         note = NotesService.upsert_note(VALID_ID, "foobar", utils.now(1000))
         self.assertFalse(note.read)
+
+    def test_notes(self):
+        total_notes = random.randint(20, 50)
+
+        expected = []
+        for i in range(total_notes):
+            note_id = NotesService.generate_note_id()
+            note_text = str(i)
+
+            NotesService.upsert_note(note_id, note_text, utils.now(i * 100))
+            expected.append({"id": note_id, "text": note_text})
+
+        expected.reverse()
+
+        notes = list(NotesService.notes())
+        notes = [{"id": note.id, "text": note.contents} for note in notes]
+
+        self.assertListEqual(expected, notes)
