@@ -26,10 +26,7 @@ Other properties of the project include:
   <img alt="Sevilla" src="https://user-images.githubusercontent.com/6868935/64915149-ef1d0700-d760-11e9-9c7d-8ee9c3bee664.gif" width="40%">
 </p>
 
-## Deploying
-TODO
-
 ## License
-Copyright © 2019 Federico Tedin.
+Copyright © 2020 Federico Tedin.
 
 Distributed under the GNU General Public License, version 3.
