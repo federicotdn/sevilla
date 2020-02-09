@@ -75,23 +75,9 @@ def index():
     return render_template("index.html", note_id=NotesService.generate_note_id(), t=t)
 
 
-def dump():
-    f = io.BytesIO()
-    with zipfile.ZipFile(f, "w") as zf:
-        for note in NotesService.notes():
-            data = zipfile.ZipInfo("{}.txt".format(note.id), note.modified.timetuple())
-            zf.writestr(data, note.contents)
-
-    f.seek(0)
-    return send_file(f, attachment_filename="notes.zip", as_attachment=True)
-
-
 @frontend.route("/notes")
 @authenticated()
 def get_notes():
-    if args_bool("dump"):
-        return dump()
-
     page = args_int("page", 1)
     pagination = NotesService.paginate_notes(page)
 
