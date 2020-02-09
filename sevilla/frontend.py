@@ -1,10 +1,8 @@
 import urllib.parse
-import io
-import zipfile
 from functools import wraps
 from datetime import datetime, timedelta
 from flask import Blueprint, current_app, request, session, redirect, url_for, flash
-from flask import abort, render_template, send_file
+from flask import abort, render_template
 from sevilla.services import AuthService, NotesService
 from sevilla.strings import t
 from sevilla.exceptions import (
