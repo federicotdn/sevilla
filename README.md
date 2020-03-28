@@ -20,6 +20,7 @@ Other properties of the project include:
 - Works pretty well on slow connections (tested on EDGE).
 - Can be used as a clipboard between devices.
 - Has an option to hide notes (this acts as a soft delete).
+- Has a very simple search function (case-folding).
 
 ## Screenshots
 <p align="center">

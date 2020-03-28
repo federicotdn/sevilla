@@ -10,6 +10,7 @@ dev_server:
 	SESSION_COOKIE_SECURE=False \
 	SEVILLA_PASSWORD=$(DEV_PASSWORD) \
 	SQLALCHEMY_DATABASE_URI=$(DEV_DB_URI) \
+	SEVILLA_LOCALE=en \
 	flask run --host 0.0.0.0 --port 8080
 
 gunicorn_server:
@@ -17,6 +18,7 @@ gunicorn_server:
 	SESSION_COOKIE_SECURE=False \
 	SEVILLA_PASSWORD=$(DEV_PASSWORD) \
 	SQLALCHEMY_DATABASE_URI=$(DEV_DB_URI) \
+	SEVILLA_LOCALE=en \
 	gunicorn "sevilla:create_app()" -b 0.0.0.0:8080
 
 upgrade:

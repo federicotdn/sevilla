@@ -34,5 +34,21 @@
         "note_not_found": "Nota no encontrada",
         "token_not_found": "Token no encontrado",
 	"search": "Buscar"
+    },
+    "de": {
+	"login": "Einloggen",
+	"password": "Passwort",
+	"note_placeholder": "Hier shcreiben oder einsetzen",
+	"write": "Schreiben",
+	"logout": "Abmelden",
+	"note": "Notiz",
+	"created": "Erstelldatum",
+	"hide": "Aus.",
+	"first": "Seite 1",
+	"no_notes": "Keine Notizien zu zeigen.",
+	"empty": "leere",
+	"invalid_password": "Ungültiges Passwort.",
+	"internal_server_error": "Interner Server-Fehler",
+	"search": "Suche"
     }
 }
