@@ -11,7 +11,7 @@
 	    "generator": "secret"
 	},
 	"SEVILLA_LOCALE": {
-	    "description": "Language for UI. Possible values are: en, es.",
+	    "description": "Language for the UI. Possible values are: en (English), es (Spanish), de (German).",
 	    "value": "en"
 	},
 	"SECRET_KEY": {
