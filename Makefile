@@ -58,7 +58,7 @@ deploy:
 	git push heroku master
 
 setup-jshint:
-	npm install jshint@2.10.2
+	npm install jshint
 
 jshint:
 	node_modules/jshint/bin/jshint sevilla/static/*.js
