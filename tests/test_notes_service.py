@@ -124,20 +124,26 @@ class TestNotesService(BaseTest):
         note = NotesService.upsert_note(VALID_ID, "foobar", utils.now(1000))
         self.assertFalse(note.read)
 
-    def test_notes(self):
-        total_notes = random.randint(20, 50)
+    def test_notes_search(self):
+        note_1_id = NotesService.generate_note_id()
+        note_2_id = NotesService.generate_note_id()
+        note_3_id = NotesService.generate_note_id()
+        NotesService.upsert_note(note_1_id, "hello world", utils.now())
+        NotesService.upsert_note(note_2_id, "hello there", utils.now(1))
+        NotesService.upsert_note(note_3_id, "aaaaaaaaaa", utils.now(2))
 
-        expected = []
-        for i in range(total_notes):
-            note_id = NotesService.generate_note_id()
-            note_text = str(i)
+        notes = NotesService.paginate_notes(1, query="hello world")
+        self.assertEqual(notes.total, 1)
+        self.assertEqual(notes.items[0].contents, "hello world")
 
-            NotesService.upsert_note(note_id, note_text, utils.now(i * 100))
-            expected.append({"id": note_id, "text": note_text})
+        notes = NotesService.paginate_notes(1, query="hello")
+        self.assertEqual(notes.total, 2)
+        self.assertEqual(notes.items[1].contents, "hello world")
+        self.assertEqual(notes.items[0].contents, "hello there")
 
-        expected.reverse()
+        notes = NotesService.paginate_notes(1, query="aa")
+        self.assertEqual(notes.total, 1)
+        self.assertEqual(notes.items[0].contents, "aaaaaaaaaa")
 
-        notes = list(NotesService.notes())
-        notes = [{"id": note.id, "text": note.contents} for note in notes]
-
-        self.assertListEqual(expected, notes)
+        notes = NotesService.paginate_notes(1, query="foobarfoobar")
+        self.assertEqual(notes.total, 0)

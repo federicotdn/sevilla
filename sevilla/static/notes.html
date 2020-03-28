@@ -53,7 +53,7 @@
 	<b>←</b>
       </button>
     </a>
-    <a href="{{ url_for('.get_notes') }}" {% if pagination.page <= 1 %}class="hidden"{% endif %}>
+    <a href="{{ url_page_1 }}" {% if pagination.page <= 1 %}class="hidden"{% endif %}>
       <button id="paginationButtonReset">{{ t.first }}</button>
     </a>
     <a href="{{ url_next }}" {% if not pagination.has_next %}class="hidden"{% endif %}>
@@ -62,6 +62,14 @@
       </button>
     </a>
   </div>
+  {% endif %}
+  <div id="searchDiv">
+    <form id="searchForm" action="{{ url_for('.get_notes') }}" method="get">
+      <input name="q" class="textField" type="text" value="{{ query }}">
+      <a href="{{ url_for('.index') }}"><button class="textButton" id="searchButton">{{ t.search }}</button></a>
+    </form>
+  </div>
+  {% if pagination.items %}
   <div id="pageIndicator">{{ pagination.page }}/{{ pagination.pages }} ({{ pagination.total }})</div>
   {% endif %}
 </body>

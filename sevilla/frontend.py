@@ -50,6 +50,11 @@ def args_int(key, default=0):
         return default
 
 
+def args_str(key, default=None):
+    val = request.args.get(key, default)
+    return default if val == "" else val
+
+
 def args_bool(key):
     return key in request.args
 
@@ -77,18 +82,30 @@ def index():
 @authenticated()
 def get_notes():
     page = args_int("page", 1)
-    pagination = NotesService.paginate_notes(page)
+    query = args_str("q")
 
+    pagination = NotesService.paginate_notes(page, query=query)
+
+    url_page_1 = url_for(".get_notes")
     url_previous = url_for(".get_notes")
     if pagination.prev_num and pagination.prev_num > 1:
         url_previous += "?page={}".format(pagination.prev_num)
     url_next = "{}?page={}".format(url_for(".get_notes"), pagination.next_num)
 
+    if query:
+        param = "q={}".format(query)
+
+        url_page_1 += "?" + param
+        url_previous += ("&" if "?" in url_previous else "?") + param
+        url_next += "&" + param
+
     return render_template(
         "notes.html",
         pagination=pagination,
+        url_page_1=url_page_1,
         url_previous=url_previous,
         url_next=url_next,
+        query=query or "",
         t=t,
     )
 

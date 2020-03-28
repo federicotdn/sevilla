@@ -164,6 +164,17 @@ class TestFrontend(BaseTest):
                 with self.client.get(url) as rv:
                     self.assertEqual(rv.status_code, 200)
 
+    def test_view_notes_query(self):
+        NotesService.upsert_note(NotesService.generate_note_id(), "aaaaaa", utils.now())
+        NotesService.upsert_note(NotesService.generate_note_id(), "bbbbbb", utils.now())
+
+        with self.client.get("/notes?q=aaa") as rv:
+            self.assertEqual(rv.status_code, 200)
+            data = rv.data.decode("utf-8")
+
+            self.assertTrue("aaaaaa" in data)
+            self.assertTrue("bbbbbb" not in data)
+
     def test_view_notes_range(self):
         with self.client.get("/notes?page=1000") as rv:
             self.assertEqual(rv.status_code, 404)

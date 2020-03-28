@@ -14,7 +14,8 @@
         "invalid_password": "Invalid password.",
         "internal_server_error": "Internal server error",
         "note_not_found": "Note not found",
-        "token_not_found": "Token not found"
+        "token_not_found": "Token not found",
+	"search": "Search"
     },
     "es": {
         "login": "Iniciar",
@@ -31,6 +32,7 @@
         "invalid_password": "Contraseña inválida.",
         "internal_server_error": "Error interno del servidor",
         "note_not_found": "Nota no encontrada",
-        "token_not_found": "Token no encontrado"
+        "token_not_found": "Token no encontrado",
+	"search": "Buscar"
     }
 }

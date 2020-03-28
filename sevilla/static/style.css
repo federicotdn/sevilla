@@ -22,6 +22,10 @@ button {
     padding-left: 1em;
 }
 
+.textField {
+    border: #AAAAAA 0.1em solid;
+}
+
 /*
  *  Index (write)
  */
@@ -84,7 +88,6 @@ button {
     margin: 0 auto;
     display: block;
     text-align: center;
-    border: #AAAAAA 0.1em solid;
 }
 
 #loginLogo {
@@ -146,6 +149,22 @@ table {
     margin-top: 1em;
 }
 
+#searchDiv {
+    width: 100vw;
+    height: 1.8em;
+}
+
+#searchForm {
+    display: flex;
+    justify-content: center;
+}
+
+#searchButton {
+    background: #0062CC;
+    color: #FFFFFF;
+    margin-left: 0.5em;
+}
+
 #backButton {
     margin-top: 0.8em;
     margin-left: 0.8em;
@@ -168,7 +187,7 @@ table {
     margin: auto;
     width: 50%;
     margin-top: 1em;
-    margin-bottom: 3em;
+    margin-bottom: 1em;
     display: flex;
     justify-content: space-around;
 }
@@ -179,7 +198,7 @@ table {
 
 #pageIndicator {
     text-align: center;
-    margin-top: 2em;
+    margin-top: 1em;
     margin-bottom: 2em;
     width: 100vw;
     font-size: 1em;
@@ -189,7 +208,7 @@ table {
 #noNotesHeader {
     width: 100%;
     margin-top: 1em;
-    margin-bottom: 1em;
+    margin-bottom: 3em;
     text-align: center;
     font-family: sans-serif;
 }

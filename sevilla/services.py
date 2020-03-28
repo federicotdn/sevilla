@@ -51,20 +51,12 @@ class NotesService:
         db.session.commit()
 
     @staticmethod
-    def notes(yield_per=100):
-        return (
-            Note.query.filter(Note.hidden == db.false())
-            .order_by(Note.modified.desc())
-            .yield_per(yield_per)
-        )
+    def paginate_notes(page, page_size=DEFAULT_PAGE_SIZE, query=None):
+        q = Note.query.filter(Note.hidden == db.false())
+        if query:
+            q = q.filter(Note.contents.ilike("%{}%".format(query)))
 
-    @staticmethod
-    def paginate_notes(page, page_size=DEFAULT_PAGE_SIZE):
-        return (
-            Note.query.filter(Note.hidden == db.false())
-            .order_by(Note.modified.desc())
-            .paginate(page, per_page=page_size)
-        )
+        return q.order_by(Note.modified.desc()).paginate(page, per_page=page_size)
 
 
 class AuthService:
