@@ -164,6 +164,12 @@ table {
     margin-left: 0.5em;
 }
 
+#headerButtons {
+    display: flex;
+    justify-content: space-between;
+    width: 100vw;
+}
+
 #backButton {
     margin-top: 0.8em;
     margin-left: 0.8em;
@@ -174,12 +180,7 @@ table {
 #logoutButton {
     margin-top: 0.8em;
     margin-right: 0.8em;
-    float: right;
     background: #EEEEEE;
-}
-
-#logoutForm {
-    float: right;
 }
 
 #paginationButtons {
