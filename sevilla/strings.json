@@ -15,7 +15,7 @@
         "internal_server_error": "Internal server error",
         "note_not_found": "Note not found",
         "token_not_found": "Token not found",
-	"search": "Search"
+        "search": "Search"
     },
     "es": {
         "login": "Iniciar",
@@ -33,22 +33,22 @@
         "internal_server_error": "Error interno del servidor",
         "note_not_found": "Nota no encontrada",
         "token_not_found": "Token no encontrado",
-	"search": "Buscar"
+        "search": "Buscar"
     },
     "de": {
-	"login": "Einloggen",
-	"password": "Passwort",
-	"note_placeholder": "Hier shcreiben oder einsetzen",
-	"write": "Schreiben",
-	"logout": "Abmelden",
-	"note": "Notiz",
-	"created": "Erstelldatum",
-	"hide": "Aus.",
-	"first": "Seite 1",
-	"no_notes": "Keine Notizien zu zeigen.",
-	"empty": "leere",
-	"invalid_password": "Ungültiges Passwort.",
-	"internal_server_error": "Interner Server-Fehler",
-	"search": "Suche"
+        "login": "Einloggen",
+        "password": "Passwort",
+        "note_placeholder": "Hier schreiben oder einsetzen",
+        "write": "Schreiben",
+        "logout": "Abmelden",
+        "note": "Notiz",
+        "created": "Erstelldatum",
+        "hide": "Aus.",
+        "first": "Seite 1",
+        "no_notes": "Keine Notizien zu zeigen.",
+        "empty": "leere",
+        "invalid_password": "Ungültiges Passwort.",
+        "internal_server_error": "Interner Server-Fehler",
+        "search": "Suche"
     }
 }
